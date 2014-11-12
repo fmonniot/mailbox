@@ -22,9 +22,12 @@
  * SOFTWARE.
  */
 
-package com.github.fmonniot.mailbox;
+package com.github.fmonniot.mailbox.api;
 
-public interface MailboxManager {
+import javax.ejb.Remote;
+
+@Remote
+public interface MailboxManagerApi {
 
     /**
      * Add a mailbox for the given user
