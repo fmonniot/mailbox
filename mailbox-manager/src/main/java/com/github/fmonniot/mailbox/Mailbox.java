@@ -24,28 +24,50 @@
 
 package com.github.fmonniot.mailbox;
 
+import com.github.fmonniot.mailbox.impl.AbstractBox;
+
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 import java.util.List;
 
-public interface Mailbox extends Box {
+@Entity
+@DiscriminatorValue("mailbox")
+public class Mailbox extends AbstractBox {
+
+    public Mailbox(String name) {
+        super(name);
+    }
+
+    protected Mailbox() {
+    }
 
     /**
      * Delete the given message from this mailbox
-     * @param message
+     *
+     * @param message the message to delete
      */
-    void deleteMessage(Message message);
+    void deleteMessage(Message message) {
+
+    }
 
     /**
      * Deletes all read messages in this mailbox
      */
-    void deleteReadMessages();
+    void deleteReadMessages(){
+
+    }
 
     /**
      * Deletes all messages in this mailbox
      */
-    void deleteAllMessages();
+    void deleteAllMessages() {
+    }
 
     /**
      * @return a list containing all messages which are not read yet
      */
-    List<Message> getNotReadMessages();
+    List<Message> getNotReadMessages(){
+
+        return null;
+    }
 }

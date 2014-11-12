@@ -24,48 +24,97 @@
 
 package com.github.fmonniot.mailbox;
 
+import javax.persistence.*;
 import java.util.Date;
 
-public interface Message {
+@Entity
+@Table(name = "mb_message")
+public class Message {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    private String senderName;
+
+    private String receiverName;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date sendingDate;
+
+    private String subject;
+
+    private String body;
+
+    private boolean isRead;
+
+    protected Message() {
+    }
+
+    public Message(String senderName, String receiverName, Date sendingDate, String subject, String body, boolean isRead) {
+        this.senderName = senderName;
+        this.receiverName = receiverName;
+        this.sendingDate = sendingDate;
+        this.subject = subject;
+        this.body = body;
+        this.isRead = isRead;
+    }
 
     /**
      * @return this message id
      */
-    Long getId();
+    public Long getId() {
+        return id;
+    }
 
     /**
      * @return the name of the sender
      */
-    String getSenderName();
+    public String getSenderName() {
+        return senderName;
+    }
 
     /**
      * @return the name of the receiver
      */
-    String getReceiverName();
+    public String getReceiverName() {
+        return receiverName;
+    }
 
     /**
      * @return when this message has been sent
      */
-    Date getSendingDate();
+    public Date getSendingDate() {
+        return sendingDate;
+    }
 
     /**
      * @return The subject fo this message (if any)
      */
-    String getSubject();
+    public String getSubject() {
+        return subject;
+    }
 
     /**
      * @return the content of this message (if any)
      */
-    String getBody();
+    public String getBody() {
+        return body;
+    }
 
     /**
      * @return whether this message has been read or not.
      */
-    boolean isRead();
+    public boolean isRead() {
+        return isRead;
+    }
 
     /**
      * Mark this message as read or as unread
+     *
      * @param isRead the read status of this message
      */
-    void markAsRead(boolean isRead);
+    public void markAsRead(boolean isRead) {
+        this.isRead = isRead;
+    }
 }
