@@ -22,22 +22,45 @@
  * SOFTWARE.
  */
 
-package com.github.fmonniot.mailbox.api;
+package com.github.fmonniot.mailbox;
 
-import javax.ejb.Remote;
+import java.util.Date;
 
-@Remote
-public interface MailboxManagerApi {
-
-    /**
-     * Add a mailbox for the given user
-     * @param userId the user who want a mailbox
-     */
-    void addUserMailbox(Long userId);
+public interface Message {
 
     /**
-     * Remove a mailbox for the given user
-     * @param userId the user who doesn't want a mailbox anymore
+     * @return the name of the sender
      */
-    void removeUserMailbox(Long userId);
+    String getSenderName();
+
+    /**
+     * @return the name of the receiver
+     */
+    String getReceiverName();
+
+    /**
+     * @return when this message has been sent
+     */
+    Date getSendingDate();
+
+    /**
+     * @return The subject fo this message (if any)
+     */
+    String getSubject();
+
+    /**
+     * @return the content of this message (if any)
+     */
+    String getBody();
+
+    /**
+     * @return whether this message has been read or not.
+     */
+    boolean isRead();
+
+    /**
+     * Mark this message as read or as unread
+     * @param isRead the read status of this message
+     */
+    void markAsRead(boolean isRead);
 }
