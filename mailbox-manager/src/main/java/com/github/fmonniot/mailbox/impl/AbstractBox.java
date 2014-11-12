@@ -27,14 +27,31 @@ package com.github.fmonniot.mailbox.impl;
 import com.github.fmonniot.mailbox.Box;
 import com.github.fmonniot.mailbox.Message;
 
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
+@Inheritance
+@DiscriminatorColumn(name = "box_type")
+@Table(name = "mb_box")
 public abstract class AbstractBox implements Box {
 
-    private final String name;
+    protected String name;
+    protected String box_type;
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    protected AbstractBox() {
+    }
 
     public AbstractBox(String name) {
         this.name = name;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
     }
 
     @Override

@@ -26,16 +26,32 @@ package com.github.fmonniot.mailbox.impl;
 
 import com.github.fmonniot.mailbox.Message;
 
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@Table(name = "mb_message")
 public class MessageImpl implements Message {
 
+    @Id
+    @GeneratedValue
+    private Long id;
+
     private String senderName;
+
     private String receiverName;
+
+    @Temporal(TemporalType.TIMESTAMP)
     private Date sendingDate;
+
     private String subject;
+
     private String body;
+
     private boolean isRead;
+
+    protected MessageImpl() {
+    }
 
     public MessageImpl(String senderName, String receiverName, Date sendingDate, String subject, String body, boolean isRead) {
         this.senderName = senderName;
@@ -44,6 +60,11 @@ public class MessageImpl implements Message {
         this.subject = subject;
         this.body = body;
         this.isRead = isRead;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
     }
 
     @Override

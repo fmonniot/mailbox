@@ -29,6 +29,11 @@ import java.util.List;
 public interface Box {
 
     /**
+     * @return the id of this box
+     */
+    Long getId();
+
+    /**
      * @return the name of this box
      */
     String getName();

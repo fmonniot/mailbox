@@ -22,43 +22,8 @@
  * SOFTWARE.
  */
 
-package com.github.fmonniot.mailbox.impl;
+package com.github.fmonniot.mailbox;
 
-import com.github.fmonniot.mailbox.Mailbox;
-import com.github.fmonniot.mailbox.Message;
+public interface Newsbox extends Box {
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import java.util.List;
-
-@Entity
-@DiscriminatorValue("mailbox")
-public class MailboxImpl extends AbstractBox implements Mailbox {
-
-    public MailboxImpl(String name) {
-        super(name);
-    }
-
-    protected MailboxImpl() {
-    }
-
-    @Override
-    public void deleteMessage(Message message) {
-
-    }
-
-    @Override
-    public void deleteReadMessages() {
-
-    }
-
-    @Override
-    public void deleteAllMessages() {
-
-    }
-
-    @Override
-    public List<Message> getNotReadMessages() {
-        return null;
-    }
 }

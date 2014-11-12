@@ -29,6 +29,11 @@ import java.util.Date;
 public interface Message {
 
     /**
+     * @return this message id
+     */
+    Long getId();
+
+    /**
      * @return the name of the sender
      */
     String getSenderName();
