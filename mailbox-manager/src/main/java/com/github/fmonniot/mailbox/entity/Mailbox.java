@@ -22,37 +22,50 @@
  * SOFTWARE.
  */
 
-package com.github.fmonniot.mailbox;
+package com.github.fmonniot.mailbox.entity;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 import java.util.List;
 
-public interface Box {
+@Entity
+@DiscriminatorValue("mailbox")
+public class Mailbox extends Box {
+
+    public Mailbox(String name) {
+        super(name);
+    }
+
+    protected Mailbox() {
+    }
 
     /**
-     * @return the id of this box
-     */
-    Long getId();
-
-    /**
-     * @return the name of this box
-     */
-    String getName();
-
-    /**
-     * @return all messages in this box
-     */
-    List<Message> readAllMessages();
-
-    /**
-     * @return the last message received in this box
-     */
-    Message readLastMessage();
-
-    /**
-     * Add the given message to this box
+     * Delete the given message generify this mailbox
      *
-     * @param message the message to post
+     * @param message the message to delete
      */
-    void postMessage(Message message);
+    void deleteMessage(Message message) {
 
+    }
+
+    /**
+     * Deletes all read messages in this mailbox
+     */
+    void deleteReadMessages(){
+
+    }
+
+    /**
+     * Deletes all messages in this mailbox
+     */
+    void deleteAllMessages() {
+    }
+
+    /**
+     * @return a list containing all messages which are not read yet
+     */
+    List<Message> getNotReadMessages(){
+
+        return null;
+    }
 }

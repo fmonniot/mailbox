@@ -1,4 +1,4 @@
-package com.github.fmonniot.mailbox.endpoints.v1;
+package com.github.fmonniot.mailbox.api;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;

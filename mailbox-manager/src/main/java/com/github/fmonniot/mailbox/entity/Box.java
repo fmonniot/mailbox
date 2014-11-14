@@ -22,52 +22,68 @@
  * SOFTWARE.
  */
 
-package com.github.fmonniot.mailbox;
+package com.github.fmonniot.mailbox.entity;
 
-import com.github.fmonniot.mailbox.impl.AbstractBox;
-
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@DiscriminatorValue("mailbox")
-public class Mailbox extends AbstractBox {
+@Inheritance
+@DiscriminatorColumn(name = "box_type")
+@Table(name = "mb_box")
+public abstract class Box {
 
-    public Mailbox(String name) {
-        super(name);
+    protected String name;
+
+    // Used for distinguishing different type of box (done by JPA with @Discriminator[Column|Value])
+    @SuppressWarnings("UnusedDeclaration")
+    protected String box_type;
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    protected Box() {
     }
 
-    protected Mailbox() {
-    }
-
-    /**
-     * Delete the given message from this mailbox
-     *
-     * @param message the message to delete
-     */
-    void deleteMessage(Message message) {
-
-    }
-
-    /**
-     * Deletes all read messages in this mailbox
-     */
-    void deleteReadMessages(){
-
+    public Box(String name) {
+        this.name = name;
     }
 
     /**
-     * Deletes all messages in this mailbox
+     * @return the id of this box
      */
-    void deleteAllMessages() {
+    public Long getId() {
+        return id;
     }
 
     /**
-     * @return a list containing all messages which are not read yet
+     * @return the name of this box
      */
-    List<Message> getNotReadMessages(){
+    public String getName() {
+        return name;
+    }
 
+    /**
+     * @return all messages in this box
+     */
+    public List<Message> readAllMessages() {
         return null;
+    }
+
+    /**
+     * @return the last message received in this box
+     */
+    public Message readLastMessage() {
+        return null;
+    }
+
+    /**
+     * Add the given message to this box
+     *
+     * @param message the message to post
+     */
+    public void postMessage(Message message) {
+
     }
 }

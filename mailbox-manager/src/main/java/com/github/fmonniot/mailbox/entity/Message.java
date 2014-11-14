@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.github.fmonniot.mailbox;
+package com.github.fmonniot.mailbox.entity;
 
 import javax.persistence.*;
 import java.util.Date;

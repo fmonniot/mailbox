@@ -22,55 +22,8 @@
  * SOFTWARE.
  */
 
-package com.github.fmonniot.mailbox.impl;
+package com.github.fmonniot.mailbox.entity;
 
-import com.github.fmonniot.mailbox.Box;
-import com.github.fmonniot.mailbox.Message;
+public class Newsbox extends Box {
 
-import javax.persistence.*;
-import java.util.List;
-
-@Entity
-@Inheritance
-@DiscriminatorColumn(name = "box_type")
-@Table(name = "mb_box")
-public abstract class AbstractBox implements Box {
-
-    protected String name;
-    protected String box_type;
-    @Id
-    @GeneratedValue
-    private Long id;
-
-    protected AbstractBox() {
-    }
-
-    public AbstractBox(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public List<Message> readAllMessages() {
-        return null;
-    }
-
-    @Override
-    public Message readLastMessage() {
-        return null;
-    }
-
-    @Override
-    public void postMessage(Message message) {
-
-    }
 }
