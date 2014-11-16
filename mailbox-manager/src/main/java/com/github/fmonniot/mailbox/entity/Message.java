@@ -24,12 +24,14 @@
 
 package com.github.fmonniot.mailbox.entity;
 
+import com.github.fmonniot.mailbox.persistence.EntityIdentifiable;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "mb_message")
-public class Message {
+public class Message implements EntityIdentifiable {
 
     @Id
     @GeneratedValue
@@ -66,6 +68,7 @@ public class Message {
     /**
      * @return this message id
      */
+    @Override
     public Long getId() {
         return id;
     }
