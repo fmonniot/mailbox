@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface MailboxService {
 
-    List<Mailbox> list(long clientId);
+    List<Mailbox> listByClientId(long clientId);
 
     Mailbox get(Long mailboxId);
 

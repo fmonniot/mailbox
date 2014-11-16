@@ -36,7 +36,7 @@ public class MailboxEndpoint {
     @GET
     public Response list(@HeaderParam("X-Client-ID") Long clientId) {
         return Response.status(200)
-                .entity(generify(mailboxService.list(clientId)))
+                .entity(generify(mailboxService.listByClientId(clientId)))
                 .build();
     }
 
