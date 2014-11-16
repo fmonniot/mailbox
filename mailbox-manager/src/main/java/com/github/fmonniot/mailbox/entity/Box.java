@@ -35,11 +35,22 @@ public abstract class Box {
 
     protected String name;
 
-    // Used for distinguishing different type of box (done by JPA with @Discriminator[Column|Value])
+    /**
+     * Used for distinguishing different type of box (done by JPA with @Discriminator[Column|Value])
+     */
     @SuppressWarnings("UnusedDeclaration")
     protected String box_type;
 
+    /**
+     * Owner of this box
+     */
     private Long clientId;
+
+    /**
+     * Messages in this box
+     */
+    @OneToMany
+    private List<Message> messages;
 
     @Id
     @GeneratedValue
@@ -64,6 +75,13 @@ public abstract class Box {
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * @return all messages in this box
+     */
+    public List<Message> getMessages() {
+        return messages;
     }
 
     /**

@@ -1,28 +1,46 @@
 package com.github.fmonniot.mailbox.api;
 
+import com.github.fmonniot.mailbox.entity.Message;
+import com.github.fmonniot.mailbox.service.MessageService;
+
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+
+import static com.github.fmonniot.mailbox.utils.GenericEntityUtils.generify;
 
 @Path("/message")
 public class MessageEndpoint {
 
-    @Context
-    UriInfo uriInfo;
+    private final MessageService messageService;
+
+    @Inject
+    public MessageEndpoint(MessageService messageService) {
+        this.messageService = messageService;
+    }
 
     @GET
-    public Response index(@HeaderParam("X-Client-ID") Long clientId) {
+    public Response list(@HeaderParam("X-Client-ID") Long clientId) {
         return Response.status(200)
-                .entity("addUser is called, clientId : " + clientId)
+                .entity(generify(messageService.listForClient(clientId)))
                 .build();
     }
 
     @POST
-    public String create() {
-        return "";
+    public Response post(@HeaderParam("X-Client-ID") Long clientId, Message message) {
+        try {
+            Message postedMessage = messageService.post(clientId, message);
+            if (postedMessage == null || postedMessage.getId() == null) {
+                throw new RuntimeException();
+            }
+
+            return Response.status(200).entity(generify(postedMessage)).build();
+
+        } catch (RuntimeException e) {
+            return Response.status(400).build();
+        }
     }
 }

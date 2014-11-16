@@ -62,7 +62,7 @@ public class Mailbox extends Box {
     }
 
     /**
-     * @return a list containing all messages which are not read yet
+     * @return a listForClient containing all messages which are not read yet
      */
     List<Message> getNotReadMessages(){
 

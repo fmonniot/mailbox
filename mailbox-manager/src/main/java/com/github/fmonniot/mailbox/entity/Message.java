@@ -37,6 +37,9 @@ public class Message {
 
     private String senderName;
 
+    @ManyToOne
+    private Box box;
+
     private String receiverName;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -68,14 +71,14 @@ public class Message {
     }
 
     /**
-     * @return the name of the sender
+     * @return the name of the sender (if any)
      */
     public String getSenderName() {
         return senderName;
     }
 
     /**
-     * @return the name of the receiver
+     * @return the name of the receiver (if any)
      */
     public String getReceiverName() {
         return receiverName;
@@ -86,6 +89,10 @@ public class Message {
      */
     public Date getSendingDate() {
         return sendingDate;
+    }
+
+    public void setSendingDate(Date sendingDate) {
+        this.sendingDate = sendingDate;
     }
 
     /**
@@ -116,5 +123,13 @@ public class Message {
      */
     public void markAsRead(boolean isRead) {
         this.isRead = isRead;
+    }
+
+    public Box getBox() {
+        return box;
+    }
+
+    public void setBox(Box box) {
+        this.box = box;
     }
 }
