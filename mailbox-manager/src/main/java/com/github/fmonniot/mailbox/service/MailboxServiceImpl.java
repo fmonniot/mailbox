@@ -16,7 +16,7 @@ public class MailboxServiceImpl implements MailboxService {
 
     @Override
     public List<Mailbox> listByClientId(long clientId) {
-        return dao.getBoxes(clientId);
+        return dao.getBoxesByClientId(clientId);
     }
 
     @Override

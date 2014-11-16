@@ -7,11 +7,11 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 public interface MailboxDao {
-    List<Mailbox> getBoxes(long clientId);
-
     Mailbox findBox(long boxId);
 
     Mailbox createBox(final Mailbox box) throws EntityExistsException;
 
     void deleteBox(Mailbox box) throws EntityNotFoundException;
+
+    List<Mailbox> getBoxesByClientId(long clientId);
 }

@@ -39,6 +39,8 @@ public abstract class Box {
     @SuppressWarnings("UnusedDeclaration")
     protected String box_type;
 
+    private Long clientId;
+
     @Id
     @GeneratedValue
     private Long id;

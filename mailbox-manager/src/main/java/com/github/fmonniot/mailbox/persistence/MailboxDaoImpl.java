@@ -13,9 +13,9 @@ import java.util.List;
 public class MailboxDaoImpl implements MailboxDao {
 
     @Override
-    public List<Mailbox> getBoxes(long clientId) {
+    public List<Mailbox> getBoxesByClientId(long clientId) {
         EntityManager em = JpaHelpers.getEntityManager();
-        Query selectByIdQuery = em.createQuery("SELECT mb FROM Mailbox AS mb WHERE mb.id = :id");
+        Query selectByIdQuery = em.createQuery("SELECT mb FROM Mailbox AS mb WHERE mb.clientId = :id");
         selectByIdQuery.setParameter("id", clientId);
 
         //noinspection unchecked
