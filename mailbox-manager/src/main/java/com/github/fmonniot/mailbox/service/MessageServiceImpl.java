@@ -29,6 +29,7 @@ public class MessageServiceImpl implements MessageService {
         checkNotNull(clientId, "clientId cannot be null");
 
         Mailbox mailbox = mailboxDao.findBox(clientId);
+        checkNotNull(mailbox, "This user doesn't have a mailbox.");
 
         return messageDao.listInBox(mailbox);
     }
