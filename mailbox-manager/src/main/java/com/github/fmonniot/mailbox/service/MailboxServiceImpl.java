@@ -1,7 +1,7 @@
 package com.github.fmonniot.mailbox.service;
 
-import com.github.fmonniot.mailbox.entity.Mailbox;
-import com.github.fmonniot.mailbox.persistence.MailboxDao;
+import com.github.fmonniot.mailbox.entity.Box;
+import com.github.fmonniot.mailbox.persistence.BoxDao;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -12,15 +12,15 @@ import java.util.List;
 public class MailboxServiceImpl implements MailboxService {
 
     @Inject
-    private MailboxDao dao;
+    private BoxDao dao;
 
     @Override
-    public List<Mailbox> listByClientId(long clientId) {
+    public List<Box> listByClientId(long clientId) {
         return dao.getBoxesByClientId(clientId);
     }
 
     @Override
-    public Mailbox get(Long mailboxId) {
+    public Box get(Long mailboxId) {
         if (mailboxId == null) {
             return null;
         }
@@ -29,7 +29,7 @@ public class MailboxServiceImpl implements MailboxService {
     }
 
     @Override
-    public boolean delete(Mailbox mailbox) {
+    public boolean delete(Box mailbox) {
         try {
             dao.deleteBox(mailbox);
         } catch (EntityNotFoundException e) {
@@ -40,7 +40,7 @@ public class MailboxServiceImpl implements MailboxService {
     }
 
     @Override
-    public Mailbox create(Mailbox mailbox) {
-        return dao.createBox(new Mailbox("whatever"));
+    public Box create(Box mailbox) {
+        return dao.createBox(mailbox);
     }
 }

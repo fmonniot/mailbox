@@ -1,11 +1,13 @@
 package com.github.fmonniot.mailbox.persistence;
 
+import com.github.fmonniot.mailbox.entity.EntityIdentifiable;
+
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.Query;
 
-public class AbstractDao<T extends EntityIdentifiable> {
+class AbstractDao<T extends EntityIdentifiable> {
 
     private final String entityClassName;
 
@@ -15,7 +17,7 @@ public class AbstractDao<T extends EntityIdentifiable> {
 
     public T create(final T entity) throws EntityExistsException {
         final EntityManager em = JpaHelpers.getEntityManager();
-        T exist = findById(entity.getId());
+        T exist = entity.getId() != null ? findById(entity.getId()) : null;
 
         if (exist != null) {
             throw new EntityExistsException();

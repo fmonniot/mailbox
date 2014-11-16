@@ -1,8 +1,8 @@
 package com.github.fmonniot.mailbox.service;
 
-import com.github.fmonniot.mailbox.entity.Mailbox;
+import com.github.fmonniot.mailbox.entity.Box;
 import com.github.fmonniot.mailbox.entity.Message;
-import com.github.fmonniot.mailbox.persistence.MailboxDao;
+import com.github.fmonniot.mailbox.persistence.BoxDao;
 import com.github.fmonniot.mailbox.persistence.MessageDao;
 
 import javax.inject.Inject;
@@ -19,7 +19,7 @@ public class MessageServiceImpl implements MessageService {
     private MessageDao messageDao;
 
     @Inject
-    private MailboxDao mailboxDao;
+    private BoxDao boxDao;
 
     @Inject
     private RightsService rightsService;
@@ -28,7 +28,7 @@ public class MessageServiceImpl implements MessageService {
     public List<Message> listForClient(Long clientId) {
         checkNotNull(clientId, "clientId cannot be null");
 
-        Mailbox mailbox = mailboxDao.findBox(clientId);
+        Box mailbox = boxDao.findBox(clientId);
         checkNotNull(mailbox, "This user doesn't have a mailbox.");
 
         return messageDao.listInBox(mailbox);

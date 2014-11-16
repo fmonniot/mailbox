@@ -24,8 +24,6 @@
 
 package com.github.fmonniot.mailbox.entity;
 
-import com.github.fmonniot.mailbox.persistence.EntityIdentifiable;
-
 import javax.persistence.*;
 import java.util.Date;
 
@@ -40,6 +38,7 @@ public class Message implements EntityIdentifiable {
     private String senderName;
 
     @ManyToOne
+    @JoinColumn(name = "BOX_ID")
     private Box box;
 
     private String receiverName;

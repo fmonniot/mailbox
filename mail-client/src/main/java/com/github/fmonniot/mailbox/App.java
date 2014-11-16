@@ -24,6 +24,15 @@
 
 package com.github.fmonniot.mailbox;
 
+import com.github.fmonniot.mailbox.entity.Mailbox;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 /**
  * Hello world!
  *
@@ -32,6 +41,24 @@ public class App
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target("http://localhost:8080/api/v1");
+
+
+        Response response = target.path("mailbox").request()
+                .header("X-Client-ID", 1)
+                .accept(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(new Mailbox("mb"), MediaType.APPLICATION_JSON));
+
+        assertEquals("reponse", "", response.readEntity(String.class));
+
+    }
+
+    static public void assertEquals(String message, Object expected, Object actual) {
+        if (expected == null && actual == null)
+            return;
+        if (expected == null || !expected.equals(actual)) {
+            throw new IllegalStateException(String.format(message + " [expected=%s, actual=%s]\n", expected, actual));
+        }
     }
 }

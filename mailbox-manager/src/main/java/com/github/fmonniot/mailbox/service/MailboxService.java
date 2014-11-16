@@ -1,16 +1,16 @@
 package com.github.fmonniot.mailbox.service;
 
-import com.github.fmonniot.mailbox.entity.Mailbox;
+import com.github.fmonniot.mailbox.entity.Box;
 
 import java.util.List;
 
 public interface MailboxService {
 
-    List<Mailbox> listByClientId(long clientId);
+    List<Box> listByClientId(long clientId);
 
-    Mailbox get(Long mailboxId);
+    Box get(Long mailboxId);
 
-    boolean delete(Mailbox mailbox);
+    boolean delete(Box mailbox);
 
-    Mailbox create(Mailbox mailbox);
+    Box create(Box mailbox);
 }

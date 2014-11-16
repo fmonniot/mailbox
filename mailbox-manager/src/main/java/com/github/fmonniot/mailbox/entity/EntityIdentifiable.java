@@ -1,4 +1,4 @@
-package com.github.fmonniot.mailbox.persistence;
+package com.github.fmonniot.mailbox.entity;
 
 public interface EntityIdentifiable {
 

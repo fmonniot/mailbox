@@ -24,16 +24,12 @@
 
 package com.github.fmonniot.mailbox.entity;
 
-import com.github.fmonniot.mailbox.persistence.EntityIdentifiable;
-
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Inheritance
-@DiscriminatorColumn(name = "box_type")
 @Table(name = "mb_box")
-public abstract class Box implements EntityIdentifiable {
+public class Box implements EntityIdentifiable {
 
     protected String name;
 
@@ -41,7 +37,7 @@ public abstract class Box implements EntityIdentifiable {
      * Used for distinguishing different type of box (done by JPA with @Discriminator[Column|Value])
      */
     @SuppressWarnings("UnusedDeclaration")
-    protected String box_type;
+    protected String boxType;
 
     /**
      * Owner of this box

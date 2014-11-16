@@ -1,6 +1,6 @@
 package com.github.fmonniot.mailbox.api;
 
-import com.github.fmonniot.mailbox.entity.Mailbox;
+import com.github.fmonniot.mailbox.entity.Box;
 import com.github.fmonniot.mailbox.service.MailboxService;
 
 import javax.inject.Inject;
@@ -23,7 +23,7 @@ public class MailboxEndpoint {
     @GET
     @Path("{boxId}")
     public Response get(@PathParam("boxId") Long boxId) {
-        Mailbox mailbox = mailboxService.get(boxId);
+        Box mailbox = mailboxService.get(boxId);
 
         if (mailbox != null) {
             return Response.status(200).entity(generify(mailbox)).build();
@@ -42,9 +42,9 @@ public class MailboxEndpoint {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response add(Mailbox mailbox) {
+    public Response add(Box mailbox) {
         try {
-            Mailbox createdMailbox = mailboxService.create(mailbox);
+            Box createdMailbox = mailboxService.create(mailbox);
             if (createdMailbox == null || createdMailbox.getId() == null) {
                 throw new RuntimeException();
             }
@@ -52,13 +52,13 @@ public class MailboxEndpoint {
             return Response.status(200).entity(generify(createdMailbox)).build();
 
         } catch (RuntimeException e) {
-            return Response.status(400).build();
+            return Response.status(400).entity(e).build();
         }
     }
 
     @DELETE
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response delete(Mailbox mailbox) {
+    public Response delete(Box mailbox) {
         boolean deleted = mailboxService.delete(mailbox);
 
         if (deleted) {
