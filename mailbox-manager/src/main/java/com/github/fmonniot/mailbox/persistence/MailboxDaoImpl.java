@@ -10,7 +10,11 @@ import javax.persistence.Query;
 import java.util.List;
 
 @RequestScoped
-public class MailboxDaoImpl implements MailboxDao {
+public class MailboxDaoImpl extends AbstractDao<Mailbox> implements MailboxDao {
+
+    public MailboxDaoImpl() {
+        super("Mailbox");
+    }
 
     @Override
     public List<Mailbox> getBoxesByClientId(long clientId) {
@@ -22,50 +26,28 @@ public class MailboxDaoImpl implements MailboxDao {
         return selectByIdQuery.getResultList();
     }
 
+    /**
+     * @deprecated
+     */
     @Override
     public Mailbox findBox(long boxId) {
-        EntityManager em = JpaHelpers.getEntityManager();
-        Query selectByIdQuery = em.createQuery("SELECT mb FROM Mailbox AS mb WHERE mb.id = :id");
-        selectByIdQuery.setParameter("id", boxId);
-
-        //noinspection unchecked
-        return (Mailbox) selectByIdQuery.getSingleResult();
+        return findById(boxId);
     }
 
+    /**
+     * @deprecated
+     */
     @Override
     public Mailbox createBox(final Mailbox box) throws EntityExistsException {
-        final EntityManager em = JpaHelpers.getEntityManager();
-        Mailbox exist = findBox(box.getId());
-
-        if (exist != null) {
-            throw new EntityExistsException();
-        }
-
-        try {
-            JpaHelpers.runInTransaction(new Runnable() {
-                @Override
-                public void run() {
-                    em.persist(box);
-                }
-            });
-        } catch (JpaHelpers.TransactionException e) {
-            e.printStackTrace();
-            return null;
-        }
-
-        return box;
+        return create(box);
     }
 
+    /**
+     * @deprecated
+     */
     @Override
     public void deleteBox(Mailbox box) throws EntityNotFoundException {
-        EntityManager em = JpaHelpers.getEntityManager();
-        Mailbox exist = findBox(box.getId());
-
-        if (exist == null) {
-            throw new EntityNotFoundException();
-        }
-
-        em.remove(exist);
+        delete(box);
     }
 
 }

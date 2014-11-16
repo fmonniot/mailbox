@@ -24,6 +24,8 @@
 
 package com.github.fmonniot.mailbox.entity;
 
+import com.github.fmonniot.mailbox.persistence.EntityIdentifiable;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -31,7 +33,7 @@ import java.util.List;
 @Inheritance
 @DiscriminatorColumn(name = "box_type")
 @Table(name = "mb_box")
-public abstract class Box {
+public abstract class Box implements EntityIdentifiable {
 
     protected String name;
 
@@ -66,6 +68,7 @@ public abstract class Box {
     /**
      * @return the id of this box
      */
+    @Override
     public Long getId() {
         return id;
     }
