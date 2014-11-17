@@ -12,7 +12,7 @@ class AbstractDao<T extends EntityIdentifiable> {
         this.entityName = entityName;
     }
 
-    T create(final T entity) throws EntityExistsException {
+    public T create(final T entity) throws EntityExistsException {
         final EntityManager em = JpaHelpers.getEntityManager();
         T exist = entity.getId() != null ? findById(entity.getId()) : null;
 
