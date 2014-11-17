@@ -2,10 +2,7 @@ package com.github.fmonniot.mailbox.persistence;
 
 import com.github.fmonniot.mailbox.entity.EntityIdentifiable;
 
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.Query;
+import javax.persistence.*;
 
 class AbstractDao<T extends EntityIdentifiable> {
 
@@ -23,23 +20,17 @@ class AbstractDao<T extends EntityIdentifiable> {
             throw new EntityExistsException();
         }
 
-        try {
-            JpaHelpers.runInTransaction(new Runnable() {
-                @Override
-                public void run() {
-                    em.persist(entity);
-                }
-            });
-        } catch (JpaHelpers.TransactionException e) {
-            e.printStackTrace();
-            return null;
-        }
+        EntityTransaction et = em.getTransaction();
+        et.begin();
+        em.persist(entity);
+        em.flush();
+        et.commit();
 
         return entity;
     }
 
     public T findById(long id) {
-        EntityManager em = JpaHelpers.getEntityManager();
+        final EntityManager em = JpaHelpers.getEntityManager();
         Query selectByIdQuery = em.createQuery("SELECT mb FROM " + entityClassName + " AS mb WHERE mb.id = :id");
         selectByIdQuery.setParameter("id", id);
 
@@ -48,7 +39,7 @@ class AbstractDao<T extends EntityIdentifiable> {
     }
 
     public void delete(T box) throws EntityNotFoundException {
-        EntityManager em = JpaHelpers.getEntityManager();
+        final EntityManager em = JpaHelpers.getEntityManager();
         T exist = findById(box.getId());
 
         if (exist == null) {

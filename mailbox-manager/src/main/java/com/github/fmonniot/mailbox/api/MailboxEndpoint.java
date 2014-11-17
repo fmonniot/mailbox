@@ -10,9 +10,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-import static com.github.fmonniot.mailbox.utils.GenericEntityUtils.generify;
-
 @Path("/mailbox")
+@Produces(MediaType.APPLICATION_JSON)
 public class MailboxEndpoint {
 
     private final MailboxService mailboxService;
@@ -28,7 +27,7 @@ public class MailboxEndpoint {
         Box mailbox = mailboxService.get(boxId);
 
         if (mailbox != null) {
-            return Response.status(200).entity(generify(mailbox)).build();
+            return Response.status(200).entity(mailbox).build();
         } else {
             return Response.status(404).build();
         }
@@ -40,7 +39,8 @@ public class MailboxEndpoint {
         List<Box> mailboxes = mailboxService.listByClientId(clientId);
         if (mailboxes != null && mailboxes.size() > 0) {
             return Response.status(200)
-                    .entity(generify(mailboxes))
+//                    .entity(new GenericEntity<List<Box>>(mailboxes){})
+                    .entity(mailboxes)
                     .build();
         } else {
             return Response.status(404).build();
@@ -49,14 +49,14 @@ public class MailboxEndpoint {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response add(Box mailbox) {
+    public Response add(Box mailbox, @HeaderParam("X-Client-ID") Long clientId) {
         try {
-            Box createdMailbox = mailboxService.create(mailbox);
+            Box createdMailbox = mailboxService.create(mailbox, clientId);
             if (createdMailbox == null || createdMailbox.getId() == null) {
                 return Response.status(400).build();
             }
 
-            return Response.status(200).entity(generify(createdMailbox)).build();
+            return Response.status(200).entity(createdMailbox).build();
 
         } catch (EntityExistsException e) {
             return Response.status(409).entity(e).build();

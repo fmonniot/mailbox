@@ -14,4 +14,6 @@ public interface MailboxService {
     boolean delete(Box mailbox);
 
     Box create(Box mailbox) throws EntityExistsException;
+
+    Box create(Box mailbox, Long clientId) throws EntityExistsException;
 }

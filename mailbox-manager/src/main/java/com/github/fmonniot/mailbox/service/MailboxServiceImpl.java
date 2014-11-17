@@ -42,6 +42,15 @@ public class MailboxServiceImpl implements MailboxService {
 
     @Override
     public Box create(Box mailbox) throws EntityExistsException {
-        return dao.createBox(mailbox);
+        return dao.createBox(new Box(mailbox));
+    }
+
+    @Override
+    public Box create(Box mailbox, Long clientId) throws EntityExistsException {
+        if (clientId != null) {
+            mailbox.setClientId(clientId);
+        }
+
+        return create(mailbox);
     }
 }

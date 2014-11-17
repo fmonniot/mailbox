@@ -27,7 +27,7 @@ package com.github.fmonniot.mailbox.entity;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
+@Entity(name = "Box")
 @Table(name = "mb_box")
 public class Box implements EntityIdentifiable {
 
@@ -57,8 +57,12 @@ public class Box implements EntityIdentifiable {
     protected Box() {
     }
 
-    public Box(String name) {
-        this.name = name;
+    public Box(Box box) {
+        this.name = box.name;
+        this.boxType = box.boxType;
+        this.clientId = box.clientId;
+        this.messages = box.messages;
+        this.id = box.id;
     }
 
     /**
@@ -69,6 +73,26 @@ public class Box implements EntityIdentifiable {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getBoxType() {
+        return boxType;
+    }
+
+    public void setBoxType(String boxType) {
+        this.boxType = boxType;
+    }
+
+    public Long getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(Long clientId) {
+        this.clientId = clientId;
+    }
+
     /**
      * @return the name of this box
      */
@@ -76,11 +100,19 @@ public class Box implements EntityIdentifiable {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     /**
      * @return all messages in this box
      */
     public List<Message> getMessages() {
         return messages;
+    }
+
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
     }
 
     /**

@@ -27,7 +27,7 @@ package com.github.fmonniot.mailbox.entity;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity
+@Entity(name = "Message")
 @Table(name = "mb_message")
 public class Message implements EntityIdentifiable {
 
@@ -72,6 +72,10 @@ public class Message implements EntityIdentifiable {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     /**
      * @return the name of the sender (if any)
      */
@@ -79,11 +83,19 @@ public class Message implements EntityIdentifiable {
         return senderName;
     }
 
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
+    }
+
     /**
      * @return the name of the receiver (if any)
      */
     public String getReceiverName() {
         return receiverName;
+    }
+
+    public void setReceiverName(String receiverName) {
+        this.receiverName = receiverName;
     }
 
     /**
@@ -104,6 +116,10 @@ public class Message implements EntityIdentifiable {
         return subject;
     }
 
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
     /**
      * @return the content of this message (if any)
      */
@@ -111,11 +127,19 @@ public class Message implements EntityIdentifiable {
         return body;
     }
 
+    public void setBody(String body) {
+        this.body = body;
+    }
+
     /**
      * @return whether this message has been read or not.
      */
     public boolean isRead() {
         return isRead;
+    }
+
+    public void setRead(boolean isRead) {
+        this.isRead = isRead;
     }
 
     /**
