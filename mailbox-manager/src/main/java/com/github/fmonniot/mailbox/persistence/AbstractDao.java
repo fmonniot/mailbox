@@ -6,10 +6,10 @@ import javax.persistence.*;
 
 class AbstractDao<T extends EntityIdentifiable> {
 
-    private final String entityClassName;
+    private final String entityName;
 
-    AbstractDao(String entityClassName) {
-        this.entityClassName = entityClassName;
+    AbstractDao(String entityName) {
+        this.entityName = entityName;
     }
 
     T create(final T entity) throws EntityExistsException {
@@ -31,7 +31,7 @@ class AbstractDao<T extends EntityIdentifiable> {
 
     T findById(long id) {
         final EntityManager em = JpaHelpers.getEntityManager();
-        Query selectByIdQuery = em.createQuery("SELECT mb FROM " + entityClassName + " AS mb WHERE mb.id = :id");
+        Query selectByIdQuery = em.createQuery("SELECT mb FROM " + entityName + " AS mb WHERE mb.id = :id");
         selectByIdQuery.setParameter("id", id);
 
         //noinspection unchecked
