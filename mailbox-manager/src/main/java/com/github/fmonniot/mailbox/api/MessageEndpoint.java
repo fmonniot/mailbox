@@ -9,8 +9,7 @@ import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
-
-import static com.github.fmonniot.mailbox.utils.GenericEntityUtils.generify;
+import java.util.List;
 
 @Path("/message")
 public class MessageEndpoint {
@@ -24,8 +23,10 @@ public class MessageEndpoint {
 
     @GET
     public Response list(@HeaderParam("X-Client-ID") Long clientId) {
+        List<Message> messages = messageService.listForClient(clientId);
+
         return Response.status(200)
-                .entity(generify(messageService.listForClient(clientId)))
+                .entity(messages)
                 .build();
     }
 
@@ -37,7 +38,7 @@ public class MessageEndpoint {
                 throw new RuntimeException();
             }
 
-            return Response.status(200).entity(generify(postedMessage)).build();
+            return Response.status(200).entity(postedMessage).build();
 
         } catch (RuntimeException e) {
             return Response.status(400).build();
