@@ -2,6 +2,7 @@ package com.github.fmonniot.mailbox.service;
 
 import com.github.fmonniot.mailbox.entity.Box;
 
+import javax.persistence.EntityExistsException;
 import java.util.List;
 
 public interface MailboxService {
@@ -12,5 +13,5 @@ public interface MailboxService {
 
     boolean delete(Box mailbox);
 
-    Box create(Box mailbox);
+    Box create(Box mailbox) throws EntityExistsException;
 }

@@ -4,9 +4,11 @@ import com.github.fmonniot.mailbox.entity.Box;
 import com.github.fmonniot.mailbox.service.MailboxService;
 
 import javax.inject.Inject;
+import javax.persistence.EntityExistsException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 import static com.github.fmonniot.mailbox.utils.GenericEntityUtils.generify;
 
@@ -35,9 +37,14 @@ public class MailboxEndpoint {
 
     @GET
     public Response list(@HeaderParam("X-Client-ID") Long clientId) {
-        return Response.status(200)
-                .entity(generify(mailboxService.listByClientId(clientId)))
-                .build();
+        List<Box> mailboxes = mailboxService.listByClientId(clientId);
+        if (mailboxes != null && mailboxes.size() > 0) {
+            return Response.status(200)
+                    .entity(generify(mailboxes))
+                    .build();
+        } else {
+            return Response.status(404).build();
+        }
     }
 
     @POST
@@ -46,13 +53,13 @@ public class MailboxEndpoint {
         try {
             Box createdMailbox = mailboxService.create(mailbox);
             if (createdMailbox == null || createdMailbox.getId() == null) {
-                throw new RuntimeException();
+                return Response.status(400).build();
             }
 
             return Response.status(200).entity(generify(createdMailbox)).build();
 
-        } catch (RuntimeException e) {
-            return Response.status(400).entity(e).build();
+        } catch (EntityExistsException e) {
+            return Response.status(409).entity(e).build();
         }
     }
 

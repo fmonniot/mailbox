@@ -5,6 +5,7 @@ import com.github.fmonniot.mailbox.persistence.BoxDao;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class MailboxServiceImpl implements MailboxService {
     }
 
     @Override
-    public Box create(Box mailbox) {
+    public Box create(Box mailbox) throws EntityExistsException {
         return dao.createBox(mailbox);
     }
 }
