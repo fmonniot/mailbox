@@ -39,7 +39,6 @@ public class MailboxEndpoint {
         List<Box> mailboxes = mailboxService.listByClientId(clientId);
         if (mailboxes != null && mailboxes.size() > 0) {
             return Response.status(200)
-//                    .entity(new GenericEntity<List<Box>>(mailboxes){})
                     .entity(mailboxes)
                     .build();
         } else {

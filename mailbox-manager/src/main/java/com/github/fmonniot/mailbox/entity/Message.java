@@ -27,6 +27,7 @@ package com.github.fmonniot.mailbox.entity;
 import javax.persistence.*;
 import java.util.Date;
 
+@SuppressWarnings("UnusedDeclaration")
 @Entity(name = "Message")
 @Table(name = "mb_message")
 public class Message implements EntityIdentifiable {

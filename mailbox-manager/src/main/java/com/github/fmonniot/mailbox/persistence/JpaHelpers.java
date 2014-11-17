@@ -7,10 +7,6 @@ class JpaHelpers {
     private static final String DEFAULT_PU = "mailbox-pu";
 
     static EntityManager getEntityManager() {
-        return getEntityManager(DEFAULT_PU);
-    }
-
-    static EntityManager getEntityManager(String persistentUnit) {
-        return Persistence.createEntityManagerFactory(persistentUnit).createEntityManager();
+        return Persistence.createEntityManagerFactory(JpaHelpers.DEFAULT_PU).createEntityManager();
     }
 }

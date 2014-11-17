@@ -7,7 +7,7 @@ import com.github.fmonniot.mailbox.persistence.MessageDaoImpl;
 import com.github.fmonniot.mailbox.service.*;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 
-public class ApplicationBinder extends AbstractBinder {
+class ApplicationBinder extends AbstractBinder {
 
     @Override
     protected void configure() {

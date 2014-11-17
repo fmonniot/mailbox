@@ -27,17 +27,17 @@ package com.github.fmonniot.mailbox.entity;
 import javax.persistence.*;
 import java.util.List;
 
+@SuppressWarnings("UnusedDeclaration")
 @Entity(name = "Box")
 @Table(name = "mb_box")
 public class Box implements EntityIdentifiable {
 
-    protected String name;
+    private String name;
 
     /**
      * Used for distinguishing different type of box (done by JPA with @Discriminator[Column|Value])
      */
-    @SuppressWarnings("UnusedDeclaration")
-    protected String boxType;
+    private String boxType;
 
     /**
      * Owner of this box
@@ -113,28 +113,5 @@ public class Box implements EntityIdentifiable {
 
     public void setMessages(List<Message> messages) {
         this.messages = messages;
-    }
-
-    /**
-     * @return all messages in this box
-     */
-    public List<Message> readAllMessages() {
-        return null;
-    }
-
-    /**
-     * @return the last message received in this box
-     */
-    public Message readLastMessage() {
-        return null;
-    }
-
-    /**
-     * Add the given message to this box
-     *
-     * @param message the message to post
-     */
-    public void postMessage(Message message) {
-
     }
 }

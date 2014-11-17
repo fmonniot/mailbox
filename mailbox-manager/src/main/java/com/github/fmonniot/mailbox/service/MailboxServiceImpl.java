@@ -40,8 +40,7 @@ public class MailboxServiceImpl implements MailboxService {
         return true;
     }
 
-    @Override
-    public Box create(Box mailbox) throws EntityExistsException {
+    private Box create(Box mailbox) throws EntityExistsException {
         return dao.createBox(new Box(mailbox));
     }
 
