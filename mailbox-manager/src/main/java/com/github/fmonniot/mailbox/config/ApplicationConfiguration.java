@@ -1,14 +1,34 @@
 package com.github.fmonniot.mailbox.config;
 
-import org.glassfish.jersey.jackson.JacksonFeature;
-import org.glassfish.jersey.server.ResourceConfig;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
+import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
+import com.github.fmonniot.mailbox.api.MailboxEndpoint;
+import com.github.fmonniot.mailbox.api.MessageEndpoint;
+import com.google.common.collect.ImmutableSet;
 
-public class ApplicationConfiguration extends ResourceConfig {
+import javax.ws.rs.core.Application;
+import java.util.Set;
 
-    public ApplicationConfiguration() {
-        register(JacksonFeature.class);
-        register(new ApplicationBinder());
+public class ApplicationConfiguration extends Application {
 
-        packages(true, "com.github.fmonniot.mailbox.api");
+    @Override
+    public Set<Class<?>> getClasses() {
+        return new ImmutableSet.Builder<Class<?>>()
+                .add(MailboxEndpoint.class)
+                .add(MessageEndpoint.class)
+                .add(BinderFeature.class)
+                .build();
+    }
+
+    @Override
+    public Set<Object> getSingletons() {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JaxbAnnotationModule());
+        return ImmutableSet
+                .builder()
+                .add(new JacksonJaxbJsonProvider(mapper,
+                        JacksonJaxbJsonProvider.DEFAULT_ANNOTATIONS))
+                .build();
     }
 }
