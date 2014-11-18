@@ -34,8 +34,12 @@ class AbstractDao<T extends EntityIdentifiable> {
         Query selectByIdQuery = em.createQuery("SELECT mb FROM " + entityName + " AS mb WHERE mb.id = :id");
         selectByIdQuery.setParameter("id", id);
 
-        //noinspection unchecked
-        return (T) selectByIdQuery.getSingleResult();
+        try {
+            //noinspection unchecked
+            return (T) selectByIdQuery.getSingleResult();
+        } catch (NoResultException ignored) {
+            return null;
+        }
     }
 
     void delete(T box) throws EntityNotFoundException {

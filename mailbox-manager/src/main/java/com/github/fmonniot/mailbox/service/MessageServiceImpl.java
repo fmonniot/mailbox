@@ -4,6 +4,7 @@ import com.github.fmonniot.mailbox.entity.Box;
 import com.github.fmonniot.mailbox.entity.Message;
 import com.github.fmonniot.mailbox.persistence.BoxDao;
 import com.github.fmonniot.mailbox.persistence.MessageDao;
+import com.google.common.collect.Lists;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -28,8 +29,20 @@ public class MessageServiceImpl implements MessageService {
     public List<Message> listForClient(Long clientId) {
         checkNotNull(clientId, "clientId cannot be null");
 
-        Box mailbox = boxDao.findBox(clientId);
-        checkNotNull(mailbox, "This user doesn't have a mailbox.");
+        List<Box> boxes = boxDao.getBoxesByClientId(clientId);
+        Box mailbox = null;
+
+        // Get the first mailbox found (there is only one mailbox by client)
+        for (Box box : boxes) {
+            if (box.getBoxType().equals("mailbox")) {
+                mailbox = box;
+                break;
+            }
+        }
+
+        if (mailbox == null) {
+            return Lists.newArrayList();
+        }
 
         return messageDao.listInBox(mailbox);
     }
