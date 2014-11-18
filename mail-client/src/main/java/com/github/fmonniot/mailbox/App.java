@@ -24,41 +24,109 @@
 
 package com.github.fmonniot.mailbox;
 
-import com.github.fmonniot.mailbox.entity.Mailbox;
+import com.github.fmonniot.mailbox.entity.Box;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Hello world!
- *
- */
-public class App 
-{
-    public static void main( String[] args )
-    {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target("http://localhost:8080/api/v1");
+import static com.github.fmonniot.mailbox.Scenario.expectActual;
 
-
-        Response response = target.path("mailbox").request()
-                .header("X-Client-ID", 1)
-                .accept(MediaType.APPLICATION_JSON)
-                .post(Entity.entity(new Mailbox("mb"), MediaType.APPLICATION_JSON));
-
-        assertEquals("reponse", "", response.readEntity(String.class));
-
+public class App {
+    public static void main(String[] args) {
+        scenarioAdmin().play();
     }
 
-    static public void assertEquals(String message, Object expected, Object actual) {
-        if (expected == null && actual == null)
-            return;
-        if (expected == null || !expected.equals(actual)) {
-            throw new IllegalStateException(String.format(message + " [expected=%s, actual=%s]\n", expected, actual));
-        }
+    private static Scenario scenarioAdmin() {
+        final List<Box> boxBag = new ArrayList<>(1);
+
+        return new Scenario("A User wants to consult her mail.", "http://localhost:8080/mailbox-manager/api/v1/")
+                .step(new Scenario.Step() {
+                    Box box = new Box("mb", "mailbox");
+
+                    @Override
+                    public String description() {
+                        return "Create a new mailbox with name `mb`";
+                    }
+
+                    @Override
+                    public Response action(WebTarget target) {
+                        return target.path("mailbox")
+                                .request()
+                                .header("X-Client-ID", 1)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .post(Entity.entity(box, MediaType.APPLICATION_JSON));
+                    }
+
+                    @Override
+                    public Scenario.Result verify(Response response) {
+                        Box received = response.readEntity(Box.class);
+                        boxBag.add(received);
+                        boolean result = box.getBoxType().equals(received.getBoxType()) &&
+                                box.getName().equals(received.getName());
+
+                        return new Scenario.Result(result,
+                                "Entity received is valid",
+                                expectActual(box, received));
+                    }
+                })
+                .step(new Scenario.Step() {
+                    @Override
+                    public String description() {
+                        return "List all mailbox of owner";
+                    }
+
+                    @Override
+                    public Response action(WebTarget target) {
+                        return target.path("mailbox")
+                                .request()
+                                .header("X-Client-ID", 1)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .get();
+                    }
+
+                    @Override
+                    public Scenario.Result verify(Response response) {
+                        List<Box> boxes = response.readEntity(new GenericType<List<Box>>() {
+                        });
+                        boolean result = false;
+                        for (Box box : boxes) {
+                            if (box.getId().equals(boxBag.get(0).getId())) {
+                                result = true;
+                                break;
+                            }
+                        }
+
+                        return new Scenario.Result(result,
+                                "Found " + boxes.size() + " boxes for this user",
+                                "Box previously created not found");
+                    }
+                })
+                .step(new Scenario.Step() {
+                    @Override
+                    String description() {
+                        return "Remove the previously created mailbox";
+                    }
+
+                    @Override
+                    Response action(WebTarget target) {
+                        return target.path("mailbox/" + boxBag.get(0).getId())
+                                .request()
+                                .accept(MediaType.APPLICATION_JSON)
+                                .delete();
+                    }
+
+                    @Override
+                    Scenario.Result verify(Response response) {
+                        boolean result = response.getStatus() == 200;
+                        return new Scenario.Result(result,
+                                "Entity marked as deleted",
+                                "Entity not marked as deleted [" + expectActual(200, response.getStatus()) + "]");
+                    }
+                });
     }
 }

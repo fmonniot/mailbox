@@ -57,6 +57,11 @@ public class Box implements EntityIdentifiable {
     protected Box() {
     }
 
+    public Box(String name, String boxType) {
+        this.name = name;
+        this.boxType = boxType;
+    }
+
     public Box(Box box) {
         this.name = box.name;
         this.boxType = box.boxType;
