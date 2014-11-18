@@ -56,7 +56,7 @@ public class Scenario {
             System.out.println("\tStep " + (steps.indexOf(step) + 1) + ":\t" + step.description());
             Response response = step.action(target);
             Result result = step.verify(response);
-            System.out.println("\t" + (result.isOk() ? GREEN : RED) + result.getReason() + DEFAULT_COLOR);
+            System.out.println("\t" + result.getReason());
         }
     }
 
@@ -82,22 +82,31 @@ public class Scenario {
     }
 
     public static class Result {
-        private final String reasonNok;
-        private boolean ok;
         private String reasonOk;
+        private String reasonNok;
+        private boolean ok;
+        private boolean manichean;
+
+        public Result(String reasonOk) {
+            this.manichean = false;
+            this.reasonOk = reasonOk;
+        }
 
         public Result(boolean ok, String reasonOk, String reasonNok) {
+            this.manichean = true;
             this.ok = ok;
             this.reasonOk = reasonOk;
             this.reasonNok = reasonNok;
         }
 
-        public boolean isOk() {
-            return ok;
-        }
-
         public String getReason() {
-            return ok ? reasonOk : reasonNok;
+            if (!manichean) {
+                return VIOLET + reasonOk + DEFAULT_COLOR;
+            } else if (ok) {
+                return GREEN + reasonOk + DEFAULT_COLOR;
+            } else {
+                return RED + reasonNok + DEFAULT_COLOR;
+            }
         }
     }
 }

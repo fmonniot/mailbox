@@ -147,7 +147,7 @@ public class App {
                         List<Message> messages = response.readEntity(new GenericType<List<Message>>() {
                         });
 
-                        return new Scenario.Result(true, "Found " + messages.size() + " messages for this user", "");
+                        return new Scenario.Result("Found " + messages.size() + " messages for this user");
                     }
                 })
                 .step(new Scenario.Step("Post a message to a mailbox") {
