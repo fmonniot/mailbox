@@ -38,13 +38,20 @@ import static com.github.fmonniot.mailbox.Scenario.expectActual;
 
 public class App {
     public static void main(String[] args) {
-        scenarioAdmin().play();
+        String baseUrl;
+        if (args.length > 0) {
+            baseUrl = args[0];
+        } else {
+            baseUrl = "http://localhost:8080/mailbox-manager/api/v1/";
+        }
+        System.out.println(baseUrl);
+        scenarioAdmin(baseUrl).play();
     }
 
-    private static Scenario scenarioAdmin() {
+    private static Scenario scenarioAdmin(String baseUrl) {
         final List<Box> boxBag = new ArrayList<>(1);
 
-        return new Scenario("A User wants to consult her mail.", "http://localhost:8080/mailbox-manager/api/v1/")
+        return new Scenario("A User wants to consult her mail.", baseUrl)
                 .step(new Scenario.Step() {
                     Box box = new Box("mb", "mailbox");
 
