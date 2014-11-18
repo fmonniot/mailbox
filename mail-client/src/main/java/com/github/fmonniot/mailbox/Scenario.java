@@ -56,7 +56,9 @@ public class Scenario {
             System.out.println("\tStep " + (steps.indexOf(step) + 1) + ":\t" + step.description());
             Response response = step.action(target);
             Result result = step.verify(response);
-            System.out.println("\t" + result.getReason());
+            if (result.hasReason()) {
+                System.out.println("\t" + result.getReason());
+            }
         }
     }
 
@@ -78,7 +80,9 @@ public class Scenario {
 
         abstract Response action(WebTarget target);
 
-        abstract Result verify(Response response);
+        Result verify(Response response) {
+            return new Result("");
+        }
     }
 
     public static class Result {
@@ -97,6 +101,10 @@ public class Scenario {
             this.ok = ok;
             this.reasonOk = reasonOk;
             this.reasonNok = reasonNok;
+        }
+
+        public boolean hasReason() {
+            return getReason().length() > (GREEN.length() + DEFAULT_COLOR.length());
         }
 
         public String getReason() {
