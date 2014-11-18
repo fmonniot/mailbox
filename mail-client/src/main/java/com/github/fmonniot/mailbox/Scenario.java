@@ -13,6 +13,7 @@ public class Scenario {
     public static final String GREEN = "\033[32m";
     public static final String RED = "\033[31m";
     public static final String DEFAULT_COLOR = "\033[0m";
+    private static final String VIOLET = "\033[35m";
 
     private final String title;
     private final List<Step> steps = new ArrayList<>();
@@ -36,6 +37,11 @@ public class Scenario {
 
     public void play() {
         System.out.println("Begin Scenario: " + title);
+        if (steps.size() < 1) {
+            System.out.println(VIOLET + "No step defined in this scenario" + DEFAULT_COLOR);
+            return;
+        }
+
         for (Step step : steps) {
             System.out.println("\tStep " + (steps.indexOf(step) + 1) + ":\t" + step.description());
             Response response = step.action(target);
