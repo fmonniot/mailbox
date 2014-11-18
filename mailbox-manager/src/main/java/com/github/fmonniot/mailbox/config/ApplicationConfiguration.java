@@ -10,6 +10,10 @@ import com.google.common.collect.ImmutableSet;
 import javax.ws.rs.core.Application;
 import java.util.Set;
 
+/**
+ * see http://stackoverflow.com/a/23332716 and http://www.trajano.net/2014/10/predictiability-and-versioning-jax-rs-rest-api/
+ * to understand the configuration of this application.
+ */
 public class ApplicationConfiguration extends Application {
 
     @Override
