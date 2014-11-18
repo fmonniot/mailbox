@@ -65,6 +65,11 @@ public class Message implements EntityIdentifiable {
         this.isRead = isRead;
     }
 
+    public Message(String senderName, String receiverName, Date sendingDate, String subject, String body, Box box) {
+        this(senderName, receiverName, sendingDate, subject, body, false);
+        this.box = box;
+    }
+
     /**
      * @return this message id
      */
@@ -158,5 +163,14 @@ public class Message implements EntityIdentifiable {
 
     public void setBox(Box box) {
         this.box = box;
+    }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "senderName='" + senderName + '\'' +
+                ", box=" + box +
+                ", subject='" + subject + '\'' +
+                '}';
     }
 }

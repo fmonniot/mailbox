@@ -119,4 +119,14 @@ public class Box implements EntityIdentifiable {
     public void setMessages(List<Message> messages) {
         this.messages = messages;
     }
+
+    @Override
+    public String toString() {
+        return "Box{" +
+                "name='" + name + '\'' +
+                ", boxType='" + boxType + '\'' +
+                ", id=" + id +
+                ", clientId=" + clientId +
+                '}';
+    }
 }
