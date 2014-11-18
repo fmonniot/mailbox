@@ -18,6 +18,7 @@ public class Scenario {
     private final String title;
     private final List<Step> steps = new ArrayList<>();
     private final WebTarget target;
+    private ArrayList<Preparation> preparations = new ArrayList<>();
 
     public Scenario(String title, String targetUrl) {
         this.title = title;
@@ -30,12 +31,21 @@ public class Scenario {
         return String.format("expected=%s, actual=%s", expected, actual);
     }
 
+    public Scenario before(Preparation preparation) {
+        preparations.add(preparation);
+        return this;
+    }
+
     public Scenario step(Step step) {
         steps.add(step);
         return this;
     }
 
     public void play() {
+        for (Preparation preparation : preparations) {
+            preparation.exec(target);
+        }
+
         System.out.println("Begin Scenario: " + title);
         if (steps.size() < 1) {
             System.out.println(VIOLET + "No step defined in this scenario" + DEFAULT_COLOR);
@@ -50,8 +60,21 @@ public class Scenario {
         }
     }
 
+    public static interface Preparation {
+        public void exec(WebTarget target);
+    }
+
     public static abstract class Step {
-        abstract String description();
+
+        private String description;
+
+        public Step(String description) {
+            this.description = description;
+        }
+
+        String description() {
+            return description;
+        }
 
         abstract Response action(WebTarget target);
 
