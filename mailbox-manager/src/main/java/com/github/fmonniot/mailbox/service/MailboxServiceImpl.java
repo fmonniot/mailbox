@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
 import java.util.List;
 
 @Singleton
@@ -25,15 +26,22 @@ public class MailboxServiceImpl implements MailboxService {
         if (mailboxId == null) {
             return null;
         }
-
-        return dao.findBox(mailboxId);
+        try {
+            return dao.findBox(mailboxId);
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Override
-    public boolean delete(Box mailbox) {
+    public boolean delete(Long mailboxID) {
+        if (mailboxID == null) {
+            return false;
+        }
+
         try {
-            dao.deleteBox(mailbox);
-        } catch (EntityNotFoundException e) {
+            dao.deleteBox(mailboxID);
+        } catch (EntityNotFoundException | NoResultException e) {
             return false;
         }
 

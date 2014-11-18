@@ -14,7 +14,7 @@ import java.util.List;
 public class BoxDaoImpl extends AbstractDao<Box> implements BoxDao {
 
     public BoxDaoImpl() {
-        super("Mailbox");
+        super("Box");
     }
 
     @Override
@@ -45,10 +45,11 @@ public class BoxDaoImpl extends AbstractDao<Box> implements BoxDao {
 
     /**
      * @deprecated
+     * @param boxId
      */
     @Override
-    public void deleteBox(Box box) throws EntityNotFoundException {
-        delete(box);
+    public void deleteBox(final long boxId) throws EntityNotFoundException {
+        delete(findById(boxId));
     }
 
 }

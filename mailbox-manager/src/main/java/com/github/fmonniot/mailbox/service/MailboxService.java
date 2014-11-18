@@ -11,7 +11,7 @@ public interface MailboxService {
 
     Box get(Long mailboxId);
 
-    boolean delete(Box mailbox);
+    boolean delete(Long mailboxID);
 
     Box create(Box mailbox, Long clientId) throws EntityExistsException;
 }

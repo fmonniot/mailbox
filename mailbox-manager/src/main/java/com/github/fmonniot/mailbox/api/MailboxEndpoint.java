@@ -63,9 +63,9 @@ public class MailboxEndpoint {
     }
 
     @DELETE
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response delete(Box mailbox) {
-        boolean deleted = mailboxService.delete(mailbox);
+    @Path("/{id}")
+    public Response delete(@PathParam("id") Long id) {
+        boolean deleted = mailboxService.delete(id);
 
         if (deleted) {
             return Response.status(200).build();

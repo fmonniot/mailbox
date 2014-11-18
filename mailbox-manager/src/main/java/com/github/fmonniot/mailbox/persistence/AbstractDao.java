@@ -40,12 +40,15 @@ class AbstractDao<T extends EntityIdentifiable> {
 
     void delete(T box) throws EntityNotFoundException {
         final EntityManager em = JpaHelpers.getEntityManager();
-        T exist = findById(box.getId());
 
-        if (exist == null) {
+        if (findById(box.getId()) == null) {
             throw new EntityNotFoundException();
         }
 
-        em.remove(exist);
+        EntityTransaction et = em.getTransaction();
+        et.begin();
+        em.remove(em.merge(box));
+        em.flush();
+        et.commit();
     }
 }

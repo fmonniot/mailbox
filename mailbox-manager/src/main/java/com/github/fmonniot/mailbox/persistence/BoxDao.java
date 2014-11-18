@@ -12,7 +12,7 @@ public interface BoxDao {
 
     Box createBox(final Box box) throws EntityExistsException;
 
-    void deleteBox(Box box) throws EntityNotFoundException;
+    void deleteBox(long boxId) throws EntityNotFoundException;
 
     List<Box> getBoxesByClientId(long clientId);
 }
