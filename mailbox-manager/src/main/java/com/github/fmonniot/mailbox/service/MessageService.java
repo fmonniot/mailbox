@@ -22,4 +22,13 @@ public interface MessageService {
      * @return the message posted (with generated attributes)
      */
     Message post(Long clientId, Message message);
+
+    /**
+     * Delete a message
+     *
+     * @param id the id of the message to be deleted
+     *
+     * @return whether the operation was successful or not
+     */
+    boolean delete(Long id);
 }

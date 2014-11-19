@@ -24,4 +24,9 @@ public class MessageDaoImpl extends AbstractDao<Message> implements MessageDao {
         //noinspection unchecked
         return selectByIdQuery.getResultList();
     }
+
+    @Override
+    public void deleteMessage(Long id) {
+        delete(findById(id));
+    }
 }

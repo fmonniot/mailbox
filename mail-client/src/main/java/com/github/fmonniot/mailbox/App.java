@@ -125,8 +125,9 @@ public class App {
     }
 
     public static Scenario scenarioUser(String baseUrl) {
-        final BoxBag mailbox1 = new BoxBag();
-        final BoxBag mailbox2 = new BoxBag();
+        final Bag<Box> mailbox1 = new Bag<>();
+        final Bag<Box> mailbox2 = new Bag<>();
+        final Bag<Long> messageId = new Bag<>();
 
         return new Scenario("A User wants to consult her mails.", baseUrl)
                 .before(createMailboxAndStoreIdIn(mailbox1, 1))
@@ -136,7 +137,7 @@ public class App {
                     Response action(WebTarget target) {
                         return target.path("message")
                                 .request()
-                                .header("X-Client-ID", mailbox1.getClientId())
+                                .header("X-Client-ID", mailbox1.get().getClientId())
                                 .accept(MediaType.APPLICATION_JSON)
                                 .get();
                     }
@@ -154,7 +155,7 @@ public class App {
                     Response action(WebTarget target) {
                         return target.path("message")
                                 .request()
-                                .header("X-Client-ID", mailbox1.getClientId())
+                                .header("X-Client-ID", mailbox1.get().getClientId())
                                 .accept(MediaType.APPLICATION_JSON)
                                 .post(Entity.entity(
                                         new Message("senderName", "receiverName", "subject", "body", mailbox2.get()),
@@ -168,11 +169,12 @@ public class App {
                         String message;
 
                         if (result) {
-                            message = response.readEntity(Message.class).toString();
+                            Message msg = response.readEntity(Message.class);
+                            message = msg.toString();
+                            messageId.set(msg.getId());
                         } else {
                             message = response.readEntity(String.class);
                         }
-
 
                         return new Scenario.Result(result,
                                 "Posted message " + message,
@@ -185,7 +187,7 @@ public class App {
                     Response action(WebTarget target) {
                         return target.path("message")
                                 .request()
-                                .header("X-Client-ID", mailbox2.getClientId())
+                                .header("X-Client-ID", mailbox2.get().getClientId())
                                 .accept(MediaType.APPLICATION_JSON)
                                 .get();
                     }
@@ -202,10 +204,50 @@ public class App {
                                 "Found " + messages.size() + " messages for this user",
                                 "Found " + messages.size() + " messages for this user [" + expectActual(1, messages.size()) + "]");
                     }
+                })
+                .step(new Scenario.Step("Delete previously created message") {
+                    @Override
+                    Response action(WebTarget target) {
+                        return target.path("message/" + messageId.get())
+                                .request()
+                                .accept(MediaType.APPLICATION_JSON)
+                                .delete();
+                    }
+
+                    @Override
+                    Scenario.Result verify(Response response) {
+                        return new Scenario.Result(
+                                response.getStatus() == 200,
+                                "Message deleted",
+                                "Message not deleted [" + expectActual(200, response.getStatus()) + "]");
+                    }
+                })
+                .step(new Scenario.Step("List all messages of user 2") {
+                    @Override
+                    Response action(WebTarget target) {
+                        return target.path("message")
+                                .request()
+                                .header("X-Client-ID", mailbox2.get().getClientId())
+                                .accept(MediaType.APPLICATION_JSON)
+                                .get();
+                    }
+
+                    @Override
+                    Scenario.Result verify(Response response) {
+                        List<Message> messages = response.readEntity(new GenericType<List<Message>>() {
+                        });
+
+                        boolean result = messages.size() == 0;
+
+
+                        return new Scenario.Result(result,
+                                "Found " + messages.size() + " messages for this user",
+                                "Found " + messages.size() + " messages for this user [" + expectActual(1, messages.size()) + "]");
+                    }
                 });
     }
 
-    private static Scenario.Preparation createMailboxAndStoreIdIn(final BoxBag mailboxId, final long clientId) {
+    private static Scenario.Preparation createMailboxAndStoreIdIn(final Bag mailboxId, final long clientId) {
         return new Scenario.Preparation() {
             @Override
             public void exec(WebTarget target) {
@@ -220,19 +262,15 @@ public class App {
         };
     }
 
-    private static class BoxBag {
-        private Box box;
+    private static class Bag<T> {
+        private T obj;
 
-        public Box get() {
-            return box;
+        public T get() {
+            return obj;
         }
 
-        public void set(Box id) {
-            this.box = id;
-        }
-
-        public Long getClientId() {
-            return box.getClientId();
+        public void set(T obj) {
+            this.obj = obj;
         }
     }
 }

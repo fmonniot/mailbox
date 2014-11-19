@@ -9,6 +9,8 @@ import com.google.common.collect.Lists;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
 import java.util.Date;
 import java.util.List;
 
@@ -66,5 +68,20 @@ public class MessageServiceImpl implements MessageService {
 
         // Create and return the message or throw an exception
         return messageDao.create(message);
+    }
+
+    @Override
+    public boolean delete(Long id) {
+        if (id == null) {
+            return false;
+        }
+
+        try {
+            messageDao.deleteMessage(id);
+        } catch (EntityNotFoundException | NoResultException e) {
+            return false;
+        }
+
+        return true;
     }
 }

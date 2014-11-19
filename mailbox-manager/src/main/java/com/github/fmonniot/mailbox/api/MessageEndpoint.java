@@ -4,10 +4,7 @@ import com.github.fmonniot.mailbox.entity.Message;
 import com.github.fmonniot.mailbox.service.MessageService;
 
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
@@ -42,6 +39,19 @@ public class MessageEndpoint {
 
         } catch (RuntimeException e) {
             return Response.status(400).build();
+        }
+    }
+
+
+    @DELETE
+    @Path("/{id}")
+    public Response delete(@PathParam("id") Long id) {
+        boolean deleted = messageService.delete(id);
+
+        if (deleted) {
+            return Response.status(200).build();
+        } else {
+            return Response.status(404).build();
         }
     }
 }

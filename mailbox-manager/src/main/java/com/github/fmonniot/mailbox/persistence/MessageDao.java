@@ -10,4 +10,6 @@ public interface MessageDao {
     List<Message> listInBox(Box box);
 
     Message create(Message message);
+
+    void deleteMessage(Long id);
 }
