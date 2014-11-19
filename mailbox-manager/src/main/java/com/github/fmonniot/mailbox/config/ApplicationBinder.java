@@ -4,7 +4,12 @@ import com.github.fmonniot.mailbox.persistence.BoxDao;
 import com.github.fmonniot.mailbox.persistence.BoxDaoImpl;
 import com.github.fmonniot.mailbox.persistence.MessageDao;
 import com.github.fmonniot.mailbox.persistence.MessageDaoImpl;
-import com.github.fmonniot.mailbox.service.*;
+import com.github.fmonniot.mailbox.remote.RightsService;
+import com.github.fmonniot.mailbox.remote.RightsServiceImpl;
+import com.github.fmonniot.mailbox.service.MailboxService;
+import com.github.fmonniot.mailbox.service.MailboxServiceImpl;
+import com.github.fmonniot.mailbox.service.MessageService;
+import com.github.fmonniot.mailbox.service.MessageServiceImpl;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 
 class ApplicationBinder extends AbstractBinder {

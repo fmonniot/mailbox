@@ -4,6 +4,7 @@ import com.github.fmonniot.mailbox.entity.Box;
 import com.github.fmonniot.mailbox.entity.Message;
 import com.github.fmonniot.mailbox.persistence.BoxDao;
 import com.github.fmonniot.mailbox.persistence.MessageDao;
+import com.github.fmonniot.mailbox.remote.RightsService;
 import com.google.common.collect.Lists;
 
 import javax.inject.Inject;

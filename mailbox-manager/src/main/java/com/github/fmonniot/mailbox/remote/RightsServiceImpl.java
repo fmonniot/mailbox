@@ -1,4 +1,4 @@
-package com.github.fmonniot.mailbox.service;
+package com.github.fmonniot.mailbox.remote;
 
 import com.github.fmonniot.mailbox.entity.Message;
 
