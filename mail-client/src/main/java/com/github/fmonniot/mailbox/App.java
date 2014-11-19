@@ -24,6 +24,7 @@
 
 package com.github.fmonniot.mailbox;
 
+import com.github.fmonniot.mailbox.Scenario.Bag;
 import com.github.fmonniot.mailbox.entity.Box;
 import com.github.fmonniot.mailbox.entity.Message;
 
@@ -254,17 +255,5 @@ public class App {
                 mailboxId.set(b);
             }
         };
-    }
-
-    private static class Bag<T> {
-        private T obj;
-
-        public T get() {
-            return obj;
-        }
-
-        public void set(T obj) {
-            this.obj = obj;
-        }
     }
 }
