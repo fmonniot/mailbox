@@ -294,15 +294,17 @@ public class App {
                     Scenario.Result verify(Response response) {
                         boolean result = response.getStatus() == 200;
                         String message;
+                        int messages = 0;
 
                         if (result) {
                             Box b = response.readEntity(Box.class);
+                            messages = b.getMessages().size();
                             message = b.getMessages().toString();
                         } else {
                             message = response.readEntity(String.class);
                         }
 
-                        return new Scenario.Result(result,
+                        return new Scenario.Result(result && messages > 0,
                                 "Reading messages " + message,
                                 "Error while reading message [" + expectActual(200, response.getStatus()) + "]" +
                                         "[content: " + message + "]");
