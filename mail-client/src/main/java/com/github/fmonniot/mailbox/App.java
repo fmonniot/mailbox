@@ -39,12 +39,7 @@ import static com.github.fmonniot.mailbox.Scenario.expectActual;
 
 public class App {
     public static void main(String[] args) {
-        String baseUrl;
-        if (args.length > 0) {
-            baseUrl = args[0];
-        } else {
-            baseUrl = "http://localhost:8080/mailbox-manager/api/v1/";
-        }
+        String baseUrl = args.length > 0 ? args[0] : "http://localhost:8080/mailbox-manager/api/v1/";
         System.out.println(baseUrl);
         scenarioAdmin(baseUrl).play();
         scenarioUser(baseUrl).play();
@@ -247,7 +242,7 @@ public class App {
                 });
     }
 
-    private static Scenario.Preparation createMailboxAndStoreIdIn(final Bag mailboxId, final long clientId) {
+    private static Scenario.Preparation createMailboxAndStoreIdIn(final Bag<Box> mailboxId, final long clientId) {
         return new Scenario.Preparation() {
             @Override
             public void exec(WebTarget target) {
