@@ -87,7 +87,7 @@ dépendances pour l'*IoC*).
 HTTP: `GET /api/v1/mailbox`
 
 En-tête HTTP:
-```
+```http
 X-Client-ID: <your client id>
 Accept: application/json
 ```
@@ -97,7 +97,7 @@ Accept: application/json
 HTTP: `POST /api/v1/mailbox`
 
 En-tête HTTP:
-```
+```http
 X-Client-ID: <your client id>
 Accept: application/json
 ```
@@ -115,7 +115,7 @@ Corps de message:
 HTTP: `GET /api/v1/mailbox/{mailboxId}`
 
 En-tête HTTP:
-```
+```http
 Accept: application/json
 ```
 
@@ -130,7 +130,7 @@ HTTP: `DELETE /api/v1/mailbox/{mailboxId}`
 HTTP: `GET /api/v1/message`
 
 En-tête HTTP:
-```
+```http
 X-Client-ID: <your client id>
 Accept: application/json
 ```
@@ -140,7 +140,7 @@ Accept: application/json
 HTTP: `POST /api/v1/message`
 
 En-tête HTTP:
-```
+```http
 X-Client-ID: <your client id>
 Accept: application/json
 ```
