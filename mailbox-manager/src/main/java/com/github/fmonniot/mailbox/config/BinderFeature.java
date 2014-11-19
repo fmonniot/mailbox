@@ -6,7 +6,7 @@ import javax.ws.rs.core.FeatureContext;
 public class BinderFeature implements Feature {
     @Override
     public boolean configure(final FeatureContext context) {
-        context.register(new ApplicationConfiguration());
+        context.register(new ApplicationBinder());
         return true;
     }
 }
