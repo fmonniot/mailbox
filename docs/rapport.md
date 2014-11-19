@@ -166,6 +166,17 @@ HTTP: `DELETE /api/v1/message/{messageId}`
 
 ## Vérification des droits par *Mailbox Manager*
 
+Le *Manager* permet de vérifier si un utilisateur à le droit de lire ou do poster
+un message. Pour cela on utilise le service `remote.RightsService` qui permet
+d'abstraire la dépendance au *Directory Manager*.
+
+Ce service dispose de deux methode:
+* `canPost(long clientId, Message msg)` permet de savoir si un client peut poster
+le message donné.
+* `canRead(long clientId, Box mailbox)` permet de savoir si un client peut lire
+la boite de réception donné.
+
+
 ## Distribution des services
 
 ## Automatiiser le déploiement
