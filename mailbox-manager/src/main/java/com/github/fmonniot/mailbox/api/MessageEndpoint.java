@@ -38,6 +38,7 @@ public class MessageEndpoint {
             return Response.status(200).entity(postedMessage).build();
 
         } catch (RuntimeException e) {
+            e.printStackTrace();
             return Response.status(400).build();
         }
     }

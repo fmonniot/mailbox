@@ -25,7 +25,12 @@ public class NewsboxEndpoint {
 
     @GET
     public Response get(@HeaderParam("X-Client-ID") Long clientId) {
-        Box newsbox = newsboxService.getForClient(clientId);
+        Box newsbox = null;
+        try {
+            newsbox = newsboxService.getForClient(clientId);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
 
         if (newsbox != null) {
             return Response.status(200).entity(newsbox).build();

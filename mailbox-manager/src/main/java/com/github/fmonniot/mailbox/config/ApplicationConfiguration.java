@@ -5,6 +5,7 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
 import com.github.fmonniot.mailbox.api.MailboxEndpoint;
 import com.github.fmonniot.mailbox.api.MessageEndpoint;
+import com.github.fmonniot.mailbox.api.NewsboxEndpoint;
 import com.google.common.collect.ImmutableSet;
 
 import javax.ws.rs.core.Application;
@@ -21,6 +22,7 @@ public class ApplicationConfiguration extends Application {
         return new ImmutableSet.Builder<Class<?>>()
                 .add(MailboxEndpoint.class)
                 .add(MessageEndpoint.class)
+                .add(NewsboxEndpoint.class)
                 .add(BinderFeature.class)
                 .build();
     }

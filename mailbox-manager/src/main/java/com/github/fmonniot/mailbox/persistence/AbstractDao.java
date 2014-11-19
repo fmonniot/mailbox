@@ -20,6 +20,12 @@ class AbstractDao<T extends EntityIdentifiable> {
             throw new EntityExistsException();
         }
 
+        return save(entity);
+    }
+
+    public T save(final T entity) {
+        final EntityManager em = JpaHelpers.getEntityManager();
+
         EntityTransaction et = em.getTransaction();
         et.begin();
         em.persist(entity);

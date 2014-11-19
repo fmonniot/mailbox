@@ -24,7 +24,8 @@
 
 package com.github.fmonniot.mailbox.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.util.List;
@@ -32,6 +33,7 @@ import java.util.List;
 @SuppressWarnings("UnusedDeclaration")
 @Entity(name = "Box")
 @Table(name = "mb_box")
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 public class Box implements EntityIdentifiable {
 
     private String name;
@@ -50,7 +52,6 @@ public class Box implements EntityIdentifiable {
      * Messages in this box
      */
     @OneToMany
-    @JsonManagedReference
     private List<Message> messages;
 
     @Id

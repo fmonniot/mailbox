@@ -5,7 +5,9 @@ import com.github.fmonniot.mailbox.persistence.BoxDao;
 import com.github.fmonniot.mailbox.remote.RightsService;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
+@Singleton
 public class NewsboxServiceImpl implements NewsboxService {
 
     @Inject

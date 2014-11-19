@@ -5,12 +5,12 @@ import com.github.fmonniot.mailbox.entity.Message;
 import com.github.fmonniot.mailbox.persistence.BoxDao;
 import com.github.fmonniot.mailbox.persistence.MessageDao;
 import com.github.fmonniot.mailbox.remote.RightsService;
-import com.google.common.collect.Lists;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.NoResultException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,26 +28,21 @@ public class MessageServiceImpl implements MessageService {
     @Inject
     private RightsService rightsService;
 
+    @Inject
+    private NewsboxService newsboxService;
+
     @Override
     public List<Message> listForClient(Long clientId) {
         checkNotNull(clientId, "clientId cannot be null");
 
         List<Box> boxes = boxDao.getBoxesByClientId(clientId);
-        Box mailbox = null;
 
-        // Get the first mailbox found (there is only one mailbox by client)
+        List<Message> messages = new ArrayList<>();
         for (Box box : boxes) {
-            if (box.getBoxType().equals("mailbox")) {
-                mailbox = box;
-                break;
-            }
+            messages.addAll(messageDao.listInBox(box));
         }
 
-        if (mailbox == null) {
-            return Lists.newArrayList();
-        }
-
-        return messageDao.listInBox(mailbox);
+        return messages;
     }
 
     @Override
@@ -66,8 +61,11 @@ public class MessageServiceImpl implements MessageService {
         // Set necessary information
         message.setSendingDate(new Date());
 
+        Box b = boxDao.findBox(message.getBox().getId());
+        boxDao.addMessageToBox(message, b);
+
         // Create and return the message or throw an exception
-        return messageDao.create(message);
+        return message;
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.github.fmonniot.mailbox.persistence;
 
 
 import com.github.fmonniot.mailbox.entity.Box;
+import com.github.fmonniot.mailbox.entity.Message;
 
 import javax.inject.Singleton;
 import javax.persistence.*;
@@ -37,6 +38,19 @@ public class BoxDaoImpl extends AbstractDao<Box> implements BoxDao {
         }
 
         return newsbox;
+    }
+
+    @Override
+    public void addMessageToBox(Message message, Box box) {
+        EntityManager em = JpaHelpers.getEntityManager();
+        EntityTransaction et = em.getTransaction();
+        et.begin();
+        em.persist(message);
+        box.getMessages().add(message);
+        em.merge(box);
+        et.commit();
+
+        System.out.println("");
     }
 
     /**

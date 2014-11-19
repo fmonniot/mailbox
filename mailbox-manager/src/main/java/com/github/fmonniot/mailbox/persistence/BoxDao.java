@@ -2,6 +2,7 @@ package com.github.fmonniot.mailbox.persistence;
 
 
 import com.github.fmonniot.mailbox.entity.Box;
+import com.github.fmonniot.mailbox.entity.Message;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -20,4 +21,6 @@ public interface BoxDao {
      * @return the box with `boxType="newsbox"`
      */
     Box findOrCreateNewsBox();
+
+    void addMessageToBox(Message message, Box box);
 }
