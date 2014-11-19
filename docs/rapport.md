@@ -105,8 +105,8 @@ Accept: application/json
 Corps de message:
 ```json
 {
-  name: "mb",
-  boxType: "mailbox"
+  "name": "mb",
+  "boxType": "mailbox"
 }
 ```
 
