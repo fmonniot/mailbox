@@ -40,7 +40,7 @@ import static com.github.fmonniot.mailbox.Scenario.expectActual;
 public class App {
     public static void main(String[] args) {
         String baseUrl = args.length > 0 ? args[0] : "http://localhost:8080/mailbox-manager/api/v1/";
-        System.out.println(baseUrl);
+
         scenarioAdmin(baseUrl).play();
         scenarioUser(baseUrl).play();
     }
