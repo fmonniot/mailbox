@@ -9,7 +9,7 @@ import com.github.fmonniot.mailbox.entity.User;
 import java.util.List;
 
 public interface UserDao {
-    List<NewsGroupRight> lookupUserRights(long userId);
+    NewsGroupRight lookupUserRights(long userId);
 
     void setUserRights(long userId, NewsGroupRight right);
 

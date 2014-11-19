@@ -53,7 +53,7 @@ public class UserDirectoryEndpoint {
     @GET
     @Path("{userId}")
     public Response lookupUserRights(@PathParam("userId") Long userId) {
-        List<NewsGroupRight> right = userDirectoryService.lookupUserRights(userId);
+        NewsGroupRight right = userDirectoryService.lookupUserRights(userId);
         System.out.println(right.toString());
 
         if (right != null) {

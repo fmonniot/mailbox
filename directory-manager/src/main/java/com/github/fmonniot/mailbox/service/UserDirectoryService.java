@@ -9,6 +9,6 @@ public interface UserDirectoryService {
     public User create(User user);
     public boolean delete(Long userId);
     public List<User> lookupAllUsers();
-    public List<NewsGroupRight> lookupUserRights(Long userId);
+    public NewsGroupRight lookupUserRights(Long userId);
     public boolean updateUserRights(Long userId, NewsGroupRight right);
 }

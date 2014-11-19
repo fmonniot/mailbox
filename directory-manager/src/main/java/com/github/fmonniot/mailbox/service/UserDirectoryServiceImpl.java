@@ -36,7 +36,7 @@ public class UserDirectoryServiceImpl implements UserDirectoryService {
     }
 
     @Override
-    public List<NewsGroupRight> lookupUserRights(Long userId) {
+    public NewsGroupRight lookupUserRights(Long userId) {
         if (userId == null) {
             return null;
         }

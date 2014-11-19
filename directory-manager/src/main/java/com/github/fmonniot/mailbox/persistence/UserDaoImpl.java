@@ -15,12 +15,13 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
     }
 
     @Override
-    public List<NewsGroupRight> lookupUserRights(final long userId) {
+    public NewsGroupRight lookupUserRights(final long userId) {
         EntityManager em = JpaHelpers.getEntityManager();
-        Query selectByIdQuery = em.createQuery("SELECT user.right FROM User AS user");
+        Query selectByIdQuery = em.createQuery("SELECT user.right FROM User AS user WHERE user.id = :id");
+        selectByIdQuery.setParameter("id", userId);
 
         //noinspection unchecked
-        return selectByIdQuery.getResultList();
+        return (NewsGroupRight) selectByIdQuery.getSingleResult();
     }
 
     @Override
