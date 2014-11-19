@@ -24,6 +24,8 @@
 
 package com.github.fmonniot.mailbox.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -40,6 +42,7 @@ public class Message implements EntityIdentifiable {
 
     @ManyToOne
     @JoinColumn(name = "BOX_ID")
+    @JsonBackReference
     private Box box;
 
     private String receiverName;

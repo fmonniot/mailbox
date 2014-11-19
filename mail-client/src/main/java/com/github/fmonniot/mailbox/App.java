@@ -34,6 +34,7 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.logging.Logger;
 
 import static com.github.fmonniot.mailbox.Scenario.expectActual;
 
@@ -41,8 +42,9 @@ public class App {
     public static void main(String[] args) {
         String baseUrl = args.length > 0 ? args[0] : "http://localhost:8080/mailbox-manager/api/v1/";
 
-        scenarioAdmin(baseUrl).play();
-        scenarioUser(baseUrl).play();
+//        scenarioAdmin(baseUrl).play();
+//        scenarioUser(baseUrl).play();
+        scenarioNewsBox(baseUrl).play();
     }
 
     private static Scenario scenarioAdmin(String baseUrl) {
@@ -242,6 +244,72 @@ public class App {
                 });
     }
 
+    public static Scenario scenarioNewsBox(String baseUrl) {
+        final long clientId = 1;
+        final Bag<Box> newsbox = new Bag<>();
+
+        return new Scenario("A user wants to read and post to the newsbox", baseUrl)
+                .before(getNewsboxForClientIdAndStoreIn(clientId, newsbox))
+                .step(new Scenario.Step("Post a message to the newsbox") {
+                    @Override
+                    Response action(WebTarget target) {
+                        return target.path("message")
+                                .request()
+                                .header("X-Client-ID", clientId)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .post(Entity.entity(
+                                        new Message("senderName", "receiverName", "subject", "body", newsbox.get()),
+                                        MediaType.APPLICATION_JSON
+                                ));
+                    }
+
+                    @Override
+                    Scenario.Result verify(Response response) {
+                        boolean result = response.getStatus() == 200;
+                        String message;
+
+                        if (result) {
+                            message = response.readEntity(Message.class).toString();
+                        } else {
+                            message = response.readEntity(String.class);
+                        }
+
+                        return new Scenario.Result(result,
+                                "Posted message " + message,
+                                "Error while posting message [" + expectActual(200, response.getStatus()) + "]" +
+                                        "[content: " + message + "]");
+                    }
+                })
+                .step(new Scenario.Step("Read all messages in the newsbox") {
+                    @Override
+                    Response action(WebTarget target) {
+                        return target.path("newsbox")
+                                .request()
+                                .header("X-Client-ID", clientId)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .get();
+                    }
+
+                    @Override
+                    Scenario.Result verify(Response response) {
+                        boolean result = response.getStatus() == 200;
+                        String message;
+
+                        if (result) {
+                            Box b = response.readEntity(Box.class);
+                            message = b.getMessages().toString();
+                        } else {
+                            message = response.readEntity(String.class);
+                        }
+
+                        return new Scenario.Result(result,
+                                "Reading messages " + message,
+                                "Error while reading message [" + expectActual(200, response.getStatus()) + "]" +
+                                        "[content: " + message + "]");
+                    }
+                });
+    }
+
     private static Scenario.Preparation createMailboxForClientAndStoreIn(final long clientId, final Bag<Box> mailboxId) {
         return new Scenario.Preparation() {
             @Override
@@ -253,6 +321,26 @@ public class App {
                         .post(Entity.entity(new Box("mb", "mailbox"), MediaType.APPLICATION_JSON))
                         .readEntity(Box.class);
                 mailboxId.set(b);
+            }
+        };
+    }
+
+    private static Scenario.Preparation getNewsboxForClientIdAndStoreIn(final long clientId, final Bag<Box> newsbox) {
+        return new Scenario.Preparation() {
+            @Override
+            public void exec(WebTarget target) {
+                Response res = target.path("newsbox")
+                        .request()
+                        .header("X-Client-ID", clientId)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .get();
+                if (res.getStatus() == 200) {
+                    newsbox.set(res.readEntity(Box.class));
+                } else {
+                    Logger.getAnonymousLogger().severe(res.readEntity(String.class));
+                }
+
+
             }
         };
     }

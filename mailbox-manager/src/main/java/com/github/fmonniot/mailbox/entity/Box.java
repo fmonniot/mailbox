@@ -24,6 +24,8 @@
 
 package com.github.fmonniot.mailbox.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -48,6 +50,7 @@ public class Box implements EntityIdentifiable {
      * Messages in this box
      */
     @OneToMany
+    @JsonManagedReference
     private List<Message> messages;
 
     @Id
