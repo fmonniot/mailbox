@@ -15,4 +15,9 @@ public interface BoxDao {
     void deleteBox(long boxId) throws EntityNotFoundException;
 
     List<Box> getBoxesByClientId(long clientId);
+
+    /**
+     * @return the box with `boxType="newsbox"`
+     */
+    Box findOrCreateNewsBox();
 }

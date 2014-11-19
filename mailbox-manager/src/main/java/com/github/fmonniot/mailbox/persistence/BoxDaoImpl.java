@@ -4,10 +4,7 @@ package com.github.fmonniot.mailbox.persistence;
 import com.github.fmonniot.mailbox.entity.Box;
 
 import javax.inject.Singleton;
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.Query;
+import javax.persistence.*;
 import java.util.List;
 
 @Singleton
@@ -25,6 +22,21 @@ public class BoxDaoImpl extends AbstractDao<Box> implements BoxDao {
 
         //noinspection unchecked
         return selectByIdQuery.getResultList();
+    }
+
+    @Override
+    public Box findOrCreateNewsBox() {
+        EntityManager em = JpaHelpers.getEntityManager();
+        Query selectByIdQuery = em.createQuery("SELECT mb FROM Box AS mb WHERE mb.boxType = 'newsbox'");
+
+        Box newsbox;
+        try {
+            newsbox = (Box) selectByIdQuery.getSingleResult();
+        } catch (NoResultException ignored) {
+            newsbox = create(new Box("Common Newsbox", "newsbox"));
+        }
+
+        return newsbox;
     }
 
     /**
@@ -45,7 +57,7 @@ public class BoxDaoImpl extends AbstractDao<Box> implements BoxDao {
 
     /**
      * @deprecated
-     * @param boxId
+     * @param boxId the box id that we want deleted
      */
     @Override
     public void deleteBox(final long boxId) throws EntityNotFoundException {
