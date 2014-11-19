@@ -125,8 +125,8 @@ public class App {
         final Bag<Long> messageId = new Bag<>();
 
         return new Scenario("A User wants to consult her mails.", baseUrl)
-                .before(createMailboxAndStoreIdIn(mailbox1, 1))
-                .before(createMailboxAndStoreIdIn(mailbox2, 2))
+                .before(createMailboxForClientAndStoreIn(1, mailbox1))
+                .before(createMailboxForClientAndStoreIn(2, mailbox2))
                 .step(new Scenario.Step("List all messages of user 1") {
                     @Override
                     Response action(WebTarget target) {
@@ -242,7 +242,7 @@ public class App {
                 });
     }
 
-    private static Scenario.Preparation createMailboxAndStoreIdIn(final Bag<Box> mailboxId, final long clientId) {
+    private static Scenario.Preparation createMailboxForClientAndStoreIn(final long clientId, final Bag<Box> mailboxId) {
         return new Scenario.Preparation() {
             @Override
             public void exec(WebTarget target) {
