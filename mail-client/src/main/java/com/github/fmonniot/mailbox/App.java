@@ -32,7 +32,6 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.github.fmonniot.mailbox.Scenario.expectActual;
@@ -46,7 +45,7 @@ public class App {
     }
 
     private static Scenario scenarioAdmin(String baseUrl) {
-        final List<Box> boxBag = new ArrayList<>(1);
+        final Bag<Box> boxBag = new Bag<>();
 
         return new Scenario("An admin wants to manage mailboxes.", baseUrl)
                 .step(new Scenario.Step("Create a new mailbox with name `mb`") {
@@ -64,7 +63,7 @@ public class App {
                     @Override
                     public Scenario.Result verify(Response response) {
                         Box received = response.readEntity(Box.class);
-                        boxBag.add(received);
+                        boxBag.set(received);
                         boolean result = box.getBoxType().equals(received.getBoxType()) &&
                                 box.getName().equals(received.getName());
 
@@ -89,7 +88,7 @@ public class App {
                         });
                         boolean result = false;
                         for (Box box : boxes) {
-                            if (box.getId().equals(boxBag.get(0).getId())) {
+                            if (box.getId().equals(boxBag.get().getId())) {
                                 result = true;
                                 break;
                             }
@@ -103,7 +102,7 @@ public class App {
                 .step(new Scenario.Step("Remove the previously created mailbox") {
                     @Override
                     Response action(WebTarget target) {
-                        return target.path("mailbox/" + boxBag.get(0).getId())
+                        return target.path("mailbox/" + boxBag.get().getId())
                                 .request()
                                 .accept(MediaType.APPLICATION_JSON)
                                 .delete();
