@@ -56,17 +56,16 @@ public class Message implements EntityIdentifiable {
     protected Message() {
     }
 
-    public Message(String senderName, String receiverName, Date sendingDate, String subject, String body, boolean isRead) {
+    public Message(String senderName, String receiverName, String subject, String body, boolean isRead) {
         this.senderName = senderName;
         this.receiverName = receiverName;
-        this.sendingDate = sendingDate;
         this.subject = subject;
         this.body = body;
         this.isRead = isRead;
     }
 
-    public Message(String senderName, String receiverName, Date sendingDate, String subject, String body, Box box) {
-        this(senderName, receiverName, sendingDate, subject, body, false);
+    public Message(String senderName, String receiverName, String subject, String body, Box box) {
+        this(senderName, receiverName, subject, body, false);
         this.box = box;
     }
 

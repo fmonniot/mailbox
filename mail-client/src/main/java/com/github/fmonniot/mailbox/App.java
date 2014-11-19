@@ -33,7 +33,6 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static com.github.fmonniot.mailbox.Scenario.expectActual;
@@ -158,7 +157,7 @@ public class App {
                                 .header("X-Client-ID", mailbox1.getClientId())
                                 .accept(MediaType.APPLICATION_JSON)
                                 .post(Entity.entity(
-                                        new Message("senderName", "receiverName", new Date(), "subject", "body", mailbox2.get()),
+                                        new Message("senderName", "receiverName", "subject", "body", mailbox2.get()),
                                         MediaType.APPLICATION_JSON
                                 ));
                     }
