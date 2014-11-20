@@ -1,5 +1,8 @@
 package com.github.fmonniot.mailbox.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -7,6 +10,7 @@ import static javax.persistence.CascadeType.ALL;
 
 @Entity(name = "User")
 @Table(name = "mb_user")
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 public class User implements EntityIdentifiable, Serializable {
     private String userName;
 
@@ -15,18 +19,13 @@ public class User implements EntityIdentifiable, Serializable {
     private Long id;
 
     @Embedded
-    private NewsGroupRight right;
+    private NewsGroupRight permission;
 
     public User() {}
 
-    public User(String userName, NewsGroupRight right) {
+    public User(String userName, NewsGroupRight permission) {
         setUserName(userName);
-        setRight(right);
-    }
-
-    public User(String userName, boolean read, boolean write) {
-        setUserName(userName);
-        setRight(new NewsGroupRight(read, write));
+        setPermission(permission);
     }
 
     public String getUserName() {
@@ -36,16 +35,15 @@ public class User implements EntityIdentifiable, Serializable {
     public void setUserName(String userName) {
         this.userName = userName;
     }
-
     public Long getId() {
-        return id;
+        return this.id;
     }
 
-    public NewsGroupRight getRight() {
-        return right;
+    public NewsGroupRight getPermission() {
+        return permission;
     }
 
-    public void setRight(NewsGroupRight right) {
-        this.right = right;
+    public void setPermission(NewsGroupRight permission) {
+        this.permission = permission;
     }
 }
