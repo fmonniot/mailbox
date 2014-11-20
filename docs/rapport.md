@@ -40,6 +40,72 @@ automatiquement les id.
 
 ## *Directory Manager* et *Admin Client*
 
+
+### Directory APIs
+
+#### Lister tous les utilisateurs
+
+HTTP: `GET /api/v1/directory/all`
+
+En-tête HTTP:
+```http
+X-Client-ID: <your client id>
+Accept: application/json
+```
+
+#### Créer un utilisateur
+
+HTTP: `POST /api/v1/directory/create`
+
+En-tête HTTP:
+```http
+X-Client-ID: <your client id>
+Accept: application/json
+```
+
+Corps de message:
+```json
+{
+  "name": "username",
+  "permission": {
+    "readAccess":true,
+    "writeAccess":false
+  }
+}
+```
+
+#### Obtenir les droits d'un utilisateur
+
+HTTP: `GET /api/v1/directory/{userId}`
+
+En-tête HTTP:
+```http
+Accept: application/json
+```
+
+#### Modifier les droits d'un utilisateur
+
+HTTP: `POST /api/v1/directory/{userId}`
+
+En-tête HTTP:
+```http
+Accept: application/json
+```
+
+Corps de message:
+```json
+{
+  "permission": {
+    "readAccess":true,
+    "writeAccess":false
+  }
+}
+```
+
+#### Supprimer un utilisateur
+
+HTTP: `DELETE /api/v1/directory/{userId}`
+
 ## *Mailbox Manager* et *Mailbox Client*
 
 ### Structure du *Manager*

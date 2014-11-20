@@ -64,10 +64,10 @@ public class UserDirectoryEndpoint {
     }
 
     @POST
-    @Path("/update")
+    @Path("/{userId}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateUserRights(@FormParam("user") Long userId, @FormParam("read") boolean read, @FormParam("write") boolean write) {
-        boolean updated = userDirectoryService.updateUserRights(userId, new NewsGroupRight(read, write));
+    public Response updateUserRights(@PathParam("userId") Long userId, NewsGroupRight right) {
+        boolean updated = userDirectoryService.updateUserRights(userId, right);
 
         if (updated) {
             return Response.status(200).build();
