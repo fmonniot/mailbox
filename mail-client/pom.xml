@@ -55,7 +55,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>com.github.fmonniot.mailbox.Scenario</mainClass>
+                    <mainClass>com.github.fmonniot.mailbox.App</mainClass>
                 </configuration>
             </plugin>
         </plugins>
