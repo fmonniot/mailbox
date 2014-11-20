@@ -41,6 +41,26 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.3.2</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <mainClass>com.github.fmonniot.mailbox.Scenario</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
         <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
@@ -51,7 +71,6 @@
             <groupId>com.github.fmonniot.mailbox</groupId>
             <artifactId>mailbox-manager</artifactId>
             <version>1.0-SNAPSHOT</version>
-            <type>war</type>
         </dependency>
     </dependencies>
 </project>
