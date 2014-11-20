@@ -46,12 +46,11 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public Message post(Long clientId, Message message) {
+    public Message post(Long clientId, Long boxId, Message message) {
         checkNotNull(clientId, "clientId cannot be null");
         checkNotNull(message, "message cannot be null");
 
-        checkNotNull(message.getBox(), "a message must be sent to a box");
-        checkNotNull(message.getBox().getId(), "the destination box must specify an id");
+        checkNotNull(boxId, "a message must be sent to a box");
 
         // Check if user can post a message
         if (!rightsService.canPost(clientId, message)) {
@@ -61,7 +60,7 @@ public class MessageServiceImpl implements MessageService {
         // Set necessary information
         message.setSendingDate(new Date());
 
-        Box b = boxDao.findBox(message.getBox().getId());
+        Box b = boxDao.findBox(boxId);
         boxDao.addMessageToBox(message, b);
 
         // Create and return the message or throw an exception

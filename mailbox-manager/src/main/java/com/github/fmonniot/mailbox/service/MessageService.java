@@ -17,11 +17,11 @@ public interface MessageService {
      * Post a message
      *
      * @param clientId Id of the client who post the message
-     * @param message  the message to post
-     *
-     * @return the message posted (with generated attributes)
+     * @param boxId
+     *@param message  the message to post
+     *  @return the message posted (with generated attributes)
      */
-    Message post(Long clientId, Message message);
+    Message post(Long clientId, Long boxId, Message message);
 
     /**
      * Delete a message

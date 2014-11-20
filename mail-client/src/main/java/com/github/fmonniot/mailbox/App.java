@@ -153,9 +153,10 @@ public class App {
                         return target.path("message")
                                 .request()
                                 .header("X-Client-ID", mailbox1.get().getClientId())
+                                .header("X-Box-ID", mailbox1.get().getId())
                                 .accept(MediaType.APPLICATION_JSON)
                                 .post(Entity.entity(
-                                        new Message("senderName", "receiverName", "subject", "body", mailbox2.get()),
+                                        new Message("senderName", "receiverName", "subject", "body"),
                                         MediaType.APPLICATION_JSON
                                 ));
                     }
@@ -256,9 +257,10 @@ public class App {
                         return target.path("message")
                                 .request()
                                 .header("X-Client-ID", clientId)
+                                .header("X-Box-ID", newsbox.get().getId())
                                 .accept(MediaType.APPLICATION_JSON)
                                 .post(Entity.entity(
-                                        new Message("senderName", "receiverName", "subject", "body", newsbox.get()),
+                                        new Message("senderName", "receiverName", "subject", "body"),
                                         MediaType.APPLICATION_JSON
                                 ));
                     }

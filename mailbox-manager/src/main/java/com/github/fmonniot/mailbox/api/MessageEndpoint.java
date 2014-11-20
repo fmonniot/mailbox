@@ -4,6 +4,7 @@ import com.github.fmonniot.mailbox.entity.Message;
 import com.github.fmonniot.mailbox.service.MessageService;
 
 import javax.inject.Inject;
+import javax.persistence.EntityNotFoundException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -28,16 +29,16 @@ public class MessageEndpoint {
     }
 
     @POST
-    public Response post(@HeaderParam("X-Client-ID") Long clientId, Message message) {
+    public Response post(@HeaderParam("X-Client-ID") Long clientId, @HeaderParam("X-Box-ID") Long boxId, Message message) {
         try {
-            Message postedMessage = messageService.post(clientId, message);
+            Message postedMessage = messageService.post(clientId, boxId, message);
             if (postedMessage == null || postedMessage.getId() == null) {
-                throw new RuntimeException();
+                throw new EntityNotFoundException();
             }
 
             return Response.status(200).entity(postedMessage).build();
 
-        } catch (RuntimeException e) {
+        } catch (EntityNotFoundException | NullPointerException e) {
             e.printStackTrace();
             return Response.status(400).build();
         }

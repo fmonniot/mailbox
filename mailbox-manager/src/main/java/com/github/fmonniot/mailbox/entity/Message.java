@@ -68,9 +68,8 @@ public class Message implements EntityIdentifiable {
         this.isRead = isRead;
     }
 
-    public Message(String senderName, String receiverName, String subject, String body, Box box) {
+    public Message(String senderName, String receiverName, String subject, String body) {
         this(senderName, receiverName, subject, body, false);
-        this.box = box;
     }
 
     /**
