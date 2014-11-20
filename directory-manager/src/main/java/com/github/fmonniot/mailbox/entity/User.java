@@ -10,7 +10,6 @@ import static javax.persistence.CascadeType.ALL;
 
 @Entity(name = "User")
 @Table(name = "mb_user")
-@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 public class User implements EntityIdentifiable, Serializable {
     private String userName;
 

@@ -10,19 +10,15 @@ public class NewsGroupRight implements Serializable {
 
     public NewsGroupRight() {}
 
-    public NewsGroupRight(boolean readNewsGroup, boolean writeNewsGroup) {
-        if (readNewsGroup)
-            setReadAccess();
-        if (writeNewsGroup)
-            setWriteAccess();
+    public NewsGroupRight(boolean readAccess, boolean writeAccess) {
+        setReadAccess(readAccess);
+        setWriteAccess(writeAccess);
     }
 
     public boolean getReadAccess() {return readAccess;}
-    public void setReadAccess() {readAccess = true;}
+    public void setReadAccess(boolean readAccess) {this.readAccess = readAccess;}
     public boolean getWriteAccess() {return writeAccess;}
-    public void setWriteAccess() {writeAccess = true;}
-    public void unsetWriteAccess() { writeAccess = false;}
-    public void unsetReadAccess () { readAccess = false;}
+    public void setWriteAccess(boolean writeAccess) {this.writeAccess = writeAccess;}
 
     public String toString() {
         if (getReadAccess()) {
