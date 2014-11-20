@@ -28,7 +28,7 @@ public class UserDirectoryEndpoint {
     public Response add(User user) {
         try {
             User createdUser = userDirectoryService.create(user);
-            System.out.println(user.getRight().toString());
+            /*System.out.println(user.toString());*/
             if (createdUser == null || createdUser.getId() == null) {
                 return Response.status(400).build();
             }

@@ -24,14 +24,56 @@
 
 package com.github.fmonniot.mailbox;
 
-/**
- * Hello world!
- *
- */
+
+import com.github.fmonniot.mailbox.entity.NewsGroupRight;
+import com.github.fmonniot.mailbox.entity.User;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.api.json.JSONConfiguration;
+
 public class App 
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+        try {
+            NewsGroupRight right = new NewsGroupRight(false, false);
+            User user = new User("name", right);
+
+            ClientConfig clientConfig = new DefaultClientConfig();
+
+            clientConfig.getFeatures().put(
+                    JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+
+            Client client = Client.create(clientConfig);
+
+            WebResource webResource = client
+                    .resource("http://localhost:8080/directory-manager/api/v1/create");
+
+            ClientResponse response = webResource.accept("application/json")
+                    .type("application/json").post(ClientResponse.class, user);
+
+            if (response.getStatus() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : "
+                        + response.getStatus());
+            }
+
+            User output = response.getEntity(User.class);
+
+            System.out.println("Server response .... \n");
+            System.out.println(output);
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
     }
 }

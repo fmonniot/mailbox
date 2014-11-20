@@ -16,12 +16,9 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
 
     @Override
     public NewsGroupRight lookupUserRights(final long userId) {
-        EntityManager em = JpaHelpers.getEntityManager();
-        Query selectByIdQuery = em.createQuery("SELECT user.right FROM User AS user WHERE user.id = :id");
-        selectByIdQuery.setParameter("id", userId);
-
-        //noinspection unchecked
-        return (NewsGroupRight) selectByIdQuery.getSingleResult();
+        final EntityManager em = JpaHelpers.getEntityManager();
+        User user = findById(userId);
+        return user.getPermission();
     }
 
     @Override
@@ -33,7 +30,7 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
             throw new EntityNotFoundException();
         }
 
-        user.setRight(right);
+        user.setPermission(right);
 
         EntityTransaction et = em.getTransaction();
         et.begin();

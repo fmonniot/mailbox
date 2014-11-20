@@ -5,8 +5,8 @@ import java.io.Serializable;
 
 @Embeddable
 public class NewsGroupRight implements Serializable {
-    boolean readAccess;
-    boolean writeAccess;
+    boolean readAccess = false;
+    boolean writeAccess = false;
 
     public NewsGroupRight() {}
 
