@@ -45,6 +45,7 @@ public class BoxDaoImpl extends AbstractDao<Box> implements BoxDao {
         EntityManager em = JpaHelpers.getEntityManager();
         EntityTransaction et = em.getTransaction();
         et.begin();
+        message.setBox(box);
         em.persist(message);
         box.getMessages().add(message);
         em.merge(box);

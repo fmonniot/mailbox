@@ -36,7 +36,7 @@ public class MessageEndpoint {
                 throw new EntityNotFoundException();
             }
 
-            return Response.status(200).entity(postedMessage).build();
+            return Response.status(200).entity(strip(postedMessage)).build();
 
         } catch (EntityNotFoundException | NullPointerException e) {
             e.printStackTrace();
@@ -55,5 +55,12 @@ public class MessageEndpoint {
         } else {
             return Response.status(404).build();
         }
+    }
+
+    private Message strip(Message message) {
+        for (Message message1 : message.getBox().getMessages()) {
+            message1.removeBox();
+        }
+        return message;
     }
 }
