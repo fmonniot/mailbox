@@ -1,6 +1,7 @@
 package com.github.fmonniot.mailbox.api;
 
 import com.github.fmonniot.mailbox.entity.Box;
+import com.github.fmonniot.mailbox.entity.Message;
 import com.github.fmonniot.mailbox.service.MailboxService;
 
 import javax.inject.Inject;
@@ -27,6 +28,9 @@ public class MailboxEndpoint {
         Box mailbox = mailboxService.get(boxId);
 
         if (mailbox != null) {
+            for (Message message : mailbox.getMessages()) {
+                message.removeBox();
+            }
             return Response.status(200).entity(mailbox).build();
         } else {
             return Response.status(404).build();

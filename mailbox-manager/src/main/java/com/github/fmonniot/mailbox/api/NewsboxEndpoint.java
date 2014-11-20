@@ -2,6 +2,7 @@ package com.github.fmonniot.mailbox.api;
 
 
 import com.github.fmonniot.mailbox.entity.Box;
+import com.github.fmonniot.mailbox.entity.Message;
 import com.github.fmonniot.mailbox.service.NewsboxService;
 
 import javax.inject.Inject;
@@ -28,6 +29,9 @@ public class NewsboxEndpoint {
         Box newsbox = null;
         try {
             newsbox = newsboxService.getForClient(clientId);
+            for (Message message : newsbox.getMessages()) {
+                message.removeBox();
+            }
         } catch (RuntimeException e) {
             e.printStackTrace();
         }

@@ -175,4 +175,8 @@ public class Message implements EntityIdentifiable {
                 ", subject='" + subject + '\'' +
                 '}';
     }
+
+    public void removeBox() {
+        box = null;
+    }
 }

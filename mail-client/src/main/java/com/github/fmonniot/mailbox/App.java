@@ -42,8 +42,8 @@ public class App {
     public static void main(String[] args) {
         String baseUrl = args.length > 0 ? args[0] : "http://localhost:8080/mailbox-manager/api/v1/";
 
-//        scenarioAdmin(baseUrl).play();
-//        scenarioUser(baseUrl).play();
+        scenarioAdmin(baseUrl).play();
+        scenarioUser(baseUrl).play();
         scenarioNewsBox(baseUrl).play();
     }
 
