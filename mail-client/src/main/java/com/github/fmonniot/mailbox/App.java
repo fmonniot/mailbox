@@ -153,7 +153,7 @@ public class App {
                         return target.path("message")
                                 .request()
                                 .header("X-Client-ID", mailbox1.get().getClientId())
-                                .header("X-Box-ID", mailbox1.get().getId())
+                                .header("X-Box-ID", mailbox2.get().getId())
                                 .accept(MediaType.APPLICATION_JSON)
                                 .post(Entity.entity(
                                         new Message("senderName", "receiverName", "subject", "body"),

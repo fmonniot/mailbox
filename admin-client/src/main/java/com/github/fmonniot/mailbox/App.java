@@ -27,11 +27,6 @@ package com.github.fmonniot.mailbox;
 
 import com.github.fmonniot.mailbox.entity.NewsGroupRight;
 import com.github.fmonniot.mailbox.entity.User;
-import javax.ws.rs.client.Invocation;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -55,7 +50,7 @@ public class App
             Client client = Client.create(clientConfig);
 
             WebResource webResource = client
-                    .resource("http://localhost:8080/directory-manager/api/v1/create");
+                    .resource("http://localhost:8080/directory-manager/api/v1/directory/create");
 
             ClientResponse response = webResource.accept("application/json")
                     .type("application/json").post(ClientResponse.class, user);
