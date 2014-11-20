@@ -24,7 +24,18 @@ then build everything and deploy the Glassfish applications :
 
 ```bash
 cd mailbox
-mvn package
+mvn install
 mvn -pl directory-manager org.glassfish.maven.plugin:maven-glassfish-plugin:deploy
 mvn -pl mailbox-manager org.glassfish.maven.plugin:maven-glassfish-plugin:deploy
 ```
+
+there is two "client" that be used to test these services :
+
+```bash
+mvn -pl admin-client exec:java
+mvn -pl mail-client exec:java
+```
+
+## Documentation
+
+You will find some documentation under the `docs` folder (this documentation is in french)
