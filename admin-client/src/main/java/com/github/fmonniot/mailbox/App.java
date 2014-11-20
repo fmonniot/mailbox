@@ -24,46 +24,119 @@
 
 package com.github.fmonniot.mailbox;
 
-
-import com.github.fmonniot.mailbox.entity.NewsGroupRight;
-import com.github.fmonniot.mailbox.entity.User;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.api.json.JSONConfiguration;
+
 
 public class App 
 {
     public static void main( String[] args )
     {
         try {
-            NewsGroupRight right = new NewsGroupRight(false, false);
-            User user = new User("name", right);
+            final String baseUrl = "http://localhost:8080/directory-manager/api/v1/directory/";
 
-            ClientConfig clientConfig = new DefaultClientConfig();
+            String input = "{\"userName\":\"test\",\"permission\":{\"readAccess\":true,\"writeAccess\":true}}";
 
-            clientConfig.getFeatures().put(
-                    JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+            Client client = Client.create();
 
-            Client client = Client.create(clientConfig);
-
+            // create a user
             WebResource webResource = client
-                    .resource("http://localhost:8080/directory-manager/api/v1/directory/create");
+                    .resource(baseUrl + "create");
 
             ClientResponse response = webResource.accept("application/json")
-                    .type("application/json").post(ClientResponse.class, user);
+                    .type("application/json").post(ClientResponse.class, input);
 
             if (response.getStatus() != 200) {
                 throw new RuntimeException("Failed : HTTP error code : "
                         + response.getStatus());
             }
 
-            User output = response.getEntity(User.class);
+            String output = response.getEntity(String.class);
+            Long userId = Long.parseLong(output);
 
-            System.out.println("Server response .... \n");
-            System.out.println(output);
+            System.out.println("Create user .... " + output);
+
+            // lookup user rights
+            webResource = client
+                    .resource(baseUrl + userId);
+
+            response = webResource.accept("application/json")
+                    .type("application/json").get(ClientResponse.class);
+
+            if (response.getStatus() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : "
+                        + response.getStatus());
+            }
+            System.out.println("User rights .... " + response.getEntity(String.class));
+
+            // update user rights
+            input = "{\"readAccess\":false,\"writeAccess\":false}";
+
+            webResource = client
+                    .resource(baseUrl + userId);
+
+            response = webResource.accept("application/json")
+                    .type("application/json").post(ClientResponse.class, input);
+
+            if (response.getStatus() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : "
+                        + response.getStatus());
+            }
+            System.out.println("Update rights .... OK");
+
+            // lookup user rights
+            webResource = client
+                    .resource(baseUrl + userId);
+
+            response = webResource.accept("application/json")
+                    .type("application/json").get(ClientResponse.class);
+
+            if (response.getStatus() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : "
+                        + response.getStatus());
+            }
+            System.out.println("User rights .... " + response.getEntity(String.class));
+
+            // lookup all users
+            webResource = client
+                    .resource(baseUrl + "all");
+
+            response = webResource.accept("application/json")
+                    .type("application/json").get(ClientResponse.class);
+
+            if (response.getStatus() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : "
+                        + response.getStatus());
+            }
+            System.out.println("User List .... " + response.getEntity(String.class));
+
+            // delete user
+            webResource = client
+                    .resource(baseUrl + userId);
+
+            response = webResource.accept("application/json")
+                    .type("application/json").delete(ClientResponse.class);
+
+            if (response.getStatus() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : "
+                        + response.getStatus());
+            }
+            System.out.println("Delete user .... OK");
+
+            // lookup all users
+            webResource = client
+                    .resource(baseUrl + "all");
+
+            response = webResource.accept("application/json")
+                    .type("application/json").get(ClientResponse.class);
+
+            if (response.getStatus() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : "
+                        + response.getStatus());
+            }
+            System.out.println("User List .... " + response.getEntity(String.class));
+
 
         } catch (Exception e) {
 

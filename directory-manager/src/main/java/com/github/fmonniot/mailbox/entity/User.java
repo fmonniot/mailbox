@@ -45,4 +45,8 @@ public class User implements EntityIdentifiable, Serializable {
     public void setPermission(NewsGroupRight permission) {
         this.permission = permission;
     }
+
+    public String toString() {
+        return "User " + getUserName() + " with " + getPermission().toString();
+    }
 }

@@ -25,6 +25,7 @@ class AbstractDao<T extends EntityIdentifiable> {
         et.begin();
         em.persist(entity);
         em.flush();
+        em.refresh(entity);
         et.commit();
 
         return entity;

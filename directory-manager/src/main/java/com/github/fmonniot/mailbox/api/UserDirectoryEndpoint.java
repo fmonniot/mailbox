@@ -28,11 +28,10 @@ public class UserDirectoryEndpoint {
     public Response add(User user) {
         try {
             User createdUser = userDirectoryService.create(user);
-            /*System.out.println(user.toString());*/
             if (createdUser == null || createdUser.getId() == null) {
                 return Response.status(400).build();
             }
-            return Response.status(200).entity(createdUser).build();
+            return Response.status(200).entity(createdUser.getId()).build();
         } catch (EntityExistsException e) {
             return Response.status(409).entity(e).build();
         }
@@ -54,7 +53,6 @@ public class UserDirectoryEndpoint {
     @Path("{userId}")
     public Response lookupUserRights(@PathParam("userId") Long userId) {
         NewsGroupRight right = userDirectoryService.lookupUserRights(userId);
-        System.out.println(right.toString());
 
         if (right != null) {
             return Response.status(200).entity(right).build();
