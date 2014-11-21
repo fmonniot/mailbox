@@ -29,7 +29,7 @@ exposer publiquement le-dit serveur).
 
 ### Structures de données SQL
 
-![Vue d'ensemble de la structure SQL](./diagram_sql.png)
+![Vue d'ensemble de la structure SQL](https://raw.githubusercontent.com/fmonniot/mailbox/master/docs/diagram_sql.png)
 
 * **MB_BOX** représente une boite de réception de l'utilisateur *CLIENTID* (si
 *BOXTYPE* contient `mailbox`) ou une newsbox (si *BOXTYPE* contient `newsbox`).
@@ -37,9 +37,47 @@ exposer publiquement le-dit serveur).
 message est déposé dans une boite de reception (attribut *BOX_ID*).
 * **SEQUENCE** est une table utilisé par eclipseLink pour génerer
 automatiquement les id.
+* **MB_USER** représente un utilisateur (entité User) ainsi que son NewsGroupRight associé.
+
+### Structure des deux *Manager*
+
+Cette application est composée en différentes couches. Chacune de ces couches est
+abstraite de celle l'utilisant (patron *Vertical decomposition*).
+
+Ainsi les classes du package `api` sont les points d'entrée dans le programme
+et sont définies via le standard Java JAX-RS. Ces classes transforment les exceptions
+et données en code HTTP et représentation JSON respectivement.
+
+Viennent ensuite les classes du package `service` qui font les traitements métier et
+vérification des données.
+
+Le travail de persistence est laissé aux *DAO* (modèle de conception
+*Data Access Object*) du package `persistence` qui se charge de sauvegarder les
+entités dans la base de donnée et de remonter des exceptions en cas d'erreur.
+Ils permettent aussi d'abstraire JPA des classes métiers (et nous permettrait de
+changer facilement de méthode de persistence si nécessaire [passage à un PaaS]).
+
+L'ensemble de ces services est relié ensemble via le méchanisme d'injection de
+dépendance (patron de conception *Inversion of Control*) intégré à Jersey (`hk2`).
+Ceci est configuré dans le package `config`.
+
+### Explication de la configuration de Jersey
+
+Notre application comporte une configuration (classes du package `config`) est
+quelque peut particulière. Nous allons ici expliquer ce que fait chaque classe.
+
+* `ApplicationConfiguration`: Il s'agit du point d'entrée de la configuration JAX-RS.
+C'est la classe qui est définie dans le `META-INF/web.xml`. La méthode `getClasses()`
+retourne l'ensemble des classes qui vont faire partie de l'application et la méthode
+`getSingletons()` retourne un set d'instances (et non de classe) qui feront partie de
+l'application.
+* `BinderFeature`: Cette classe permet de faire le lien entre les classes chargées par
+Jersey (des `Feature`) et la classe enregistrant les *bindings* (définition des
+dépendances pour l'*IoC*).
+* `ApplicationBinder`: Déclaration de la résolution des dépendances. On associe
+à chaque inteface une implémentation.
 
 ## *Directory Manager* et *Admin Client*
-
 
 ### Directory APIs
 
@@ -108,47 +146,10 @@ HTTP: `DELETE /api/v1/directory/{userId}`
 
 ## *Mailbox Manager* et *Mailbox Client*
 
-### Structure du *Manager*
-
-Cette application est composée en différentes couches. Chacune de ces couches est
-abstraite de celle l'utilisant (patron *Vertical decomposition*).
-
-Ainsi les classes du package `api` sont les points d'entrée dans le programme
-et sont définies via le standard Java JAX-RS. Ces classes transforment les exceptions
-et données en code HTTP et représentation JSON respectivement.
-
-Viennent ensuite les classes du package `service` qui font les traitements métier et
-vérification des données.
-
-Le travail de persistence est laissé aux *DAO* (modèle de conception
-*Data Access Object*) du package `persistence` qui se charge de sauvegarder les
-entités dans la base de donnée et de remonter des exceptions en cas d'erreur.
-Ils permettent aussi d'abstraire JPA des classes métiers (et nous permettrait de
-changer facilement de méthode de persistence si nécessaire [passage à un PaaS]).
-
-L'ensemble de ces services est relié ensemble via le méchanisme d'injection de
-dépendance (patron de conception *Inversion of Control*) intégré à Jersey (`hk2`).
-Ceci est configuré dans le package `config`.
-
-### Explication de la configuration de Jersey
-
-Notre application comporte une configuration (classes du package `config`) est
-quelque peut particulière. Nous allons ici expliquer ce que fait chaque classes.
-
-* `ApplicationConfiguration`: Il s'agit du point d'entré de la configuration JAX-RS.
-C'est la classe qui est défini dans le `META-INF/web.xml`. La méthode `getClasses()`
-retourne l'ensemble des classes qui vont faire parti de l'application et la méthode
-`getSingletons()` retourne un set d'instance (et non de classe) qui feront parti de
-l'application.
-* `BinderFeature`: Cette classe permet de faire le lien entre les classes chargé par
-Jersey (des `Feature`) et la classe enregistrant les *bindings* (définition des
-dépendances pour l'*IoC*).
-* `ApplicationBinder`: Déclaration de la résolution des dépendances. On associe
-à chaque inteface une implémentation.
 
 ### Mailbox APIs
 
-#### Lister toutes les boites de reception d'un utilisateur
+#### Lister toutes les boîtes de reception d'un utilisateur
 
 HTTP: `GET /api/v1/mailbox`
 
