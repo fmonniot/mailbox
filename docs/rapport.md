@@ -7,8 +7,6 @@
 * Synchronous-call
 * Injection de dépendance (ou IoC)
 * Factory
-
-
 * Contract
 * Vertical Decomposition
 * Container (via glassfish/JEE)
@@ -33,7 +31,7 @@ exposer publiquement le-dit serveur).
 
 * **MB_BOX** représente une boite de réception de l'utilisateur *CLIENTID* (si
 *BOXTYPE* contient `mailbox`) ou une newsbox (si *BOXTYPE* contient `newsbox`).
-* **MB_MESSAGE** représente un message (un courriel) envoyé par *SERDERNAME*. Un
+* **MB_MESSAGE** représente un message (un courriel) envoyé par *SENDERNAME*. Un
 message est déposé dans une boite de reception (attribut *BOX_ID*).
 * **SEQUENCE** est une table utilisé par eclipseLink pour génerer
 automatiquement les id.
@@ -46,7 +44,7 @@ abstraite de celle l'utilisant (patron *Vertical decomposition*).
 
 Ainsi les classes du package `api` sont les points d'entrée dans le programme
 et sont définies via le standard Java JAX-RS. Ces classes transforment les exceptions
-et données en code HTTP et représentation JSON respectivement.
+et données en code HTTP et représentation JSON (respectivement).
 
 Viennent ensuite les classes du package `service` qui font les traitements métier et
 vérification des données.
@@ -63,8 +61,9 @@ Ceci est configuré dans le package `config`.
 
 ### Explication de la configuration de Jersey
 
-Notre application comporte une configuration (classes du package `config`) est
-quelque peut particulière. Nous allons ici expliquer ce que fait chaque classe.
+Notre application comporte une configuration (classes du package `config`)
+quelque peu particulière. En effet nous avons eu besoin de modifier l'instanciation
+de Jackson. Nous allons ici expliquer ce que fait chaque classe.
 
 * `ApplicationConfiguration`: Il s'agit du point d'entrée de la configuration JAX-RS.
 C'est la classe qui est définie dans le `META-INF/web.xml`. La méthode `getClasses()`
@@ -77,7 +76,7 @@ dépendances pour l'*IoC*).
 * `ApplicationBinder`: Déclaration de la résolution des dépendances. On associe
 à chaque inteface une implémentation.
 
-## *Directory Manager* et *Admin Client*
+## *Directory Manager* et *Mailbox Manager* APIs
 
 ### Directory APIs
 
@@ -143,9 +142,6 @@ Corps de message:
 #### Supprimer un utilisateur
 
 HTTP: `DELETE /api/v1/directory/{userId}`
-
-## *Mailbox Manager* et *Mailbox Client*
-
 
 ### Mailbox APIs
 
@@ -243,7 +239,21 @@ le message donné.
 * `canRead(long clientId, Box mailbox)` permet de savoir si un client peut lire
 la boite de réception donné.
 
+## Automatiser le déploiement
 
-## Distribution des services
+Nous avons utiliser Maven afin de simplifier le déploiement de nos applications.
+Ainsi nous pouvons executer les commandes suvantes (dans l'ordre) afin de déployer
+et exécuter les tests (clients).
 
-## Automatiiser le déploiement
+```sh
+export GLASSFISH_HOME=chemin/de/glassfish
+
+# Depuis le repertoire principal de l'application
+mvn install
+
+mvn -pl directory-manager glassfish:deploy
+mvn -pl mailbox-manager glassfish:deploy
+
+mvn -pl admin-client exec:java
+mvn -pl mail-client exec:java
+```

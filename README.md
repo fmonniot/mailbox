@@ -25,6 +25,8 @@ then build everything and deploy the Glassfish applications :
 ```bash
 cd mailbox
 mvn install
+
+export GLASSFISH_HOME=path/to/glassfish
 mvn -pl directory-manager org.glassfish.maven.plugin:maven-glassfish-plugin:deploy
 mvn -pl mailbox-manager org.glassfish.maven.plugin:maven-glassfish-plugin:deploy
 ```
