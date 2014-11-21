@@ -110,20 +110,20 @@ HTTP: `DELETE /api/v1/directory/{userId}`
 
 ### Structure du *Manager*
 
-Cette application est composé en différente couche. Chacune de ces couches est
+Cette application est composée en différentes couches. Chacune de ces couches est
 abstraite de celle l'utilisant (patron *Vertical decomposition*).
 
-Ainsi les classes du package `api` sont les points d'entrées dans le programme
-et sont définis via le standard Java JAX-RS. Ces classes transforme les exceptions
+Ainsi les classes du package `api` sont les points d'entrée dans le programme
+et sont définies via le standard Java JAX-RS. Ces classes transforment les exceptions
 et données en code HTTP et représentation JSON respectivement.
 
-Viens ensuite les classes du package `service` qui font les traitements métier et
+Viennent ensuite les classes du package `service` qui font les traitements métier et
 vérification des données.
 
 Le travail de persistence est laissé aux *DAO* (modèle de conception
 *Data Access Object*) du package `persistence` qui se charge de sauvegarder les
 entités dans la base de donnée et de remonter des exceptions en cas d'erreur.
-ls permette aussi d'abstraire JPA des classes métiers (et nous permettrait de
+Ils permettent aussi d'abstraire JPA des classes métiers (et nous permettrait de
 changer facilement de méthode de persistence si nécessaire [passage à un PaaS]).
 
 L'ensemble de ces services est relié ensemble via le méchanisme d'injection de
