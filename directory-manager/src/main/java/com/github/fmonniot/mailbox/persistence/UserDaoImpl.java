@@ -23,12 +23,12 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
     public void setUserRights(final long userId, final NewsGroupRight right) {
         final EntityManager em = JpaHelpers.getEntityManager();
         User user = findById(userId);
-        user.setPermission(right);
 
         if (user == null) {
             throw new EntityNotFoundException();
         }
 
+        user.setPermission(right);
         EntityTransaction et = em.getTransaction();
         et.begin();
         em.merge(user);

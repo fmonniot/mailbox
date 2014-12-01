@@ -1,7 +1,6 @@
 package com.github.fmonniot.mailbox.persistence;
 
 import com.github.fmonniot.mailbox.entity.EntityIdentifiable;
-import com.github.fmonniot.mailbox.entity.User;
 
 import javax.persistence.*;
 
